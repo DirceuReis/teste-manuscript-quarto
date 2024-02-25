@@ -1,8 +1,8 @@
 ---
-title: La Palma Earthquakes
+title: Ajuste da Distribuição Generalizada de Valores Extremos para a Precipitações Máximas Diárias no Brasil  
 author:
-  - name: Steve Purves
-    orcid: 0000-0002-0760-5497
+  - name: Tomas Duval
+    orcid: 
     corresponding: true
     email: steve@curvenote.com
     roles:
@@ -12,15 +12,26 @@ author:
       - Visualization
     affiliations:
       - Curvenote
-  - name: Rowan Cockett
-    orcid: 0000-0002-7859-8394
+  - name: Saulo AIres de Souza
+    orcid: 0000-0002-0760-5497
+    corresponding: true
+    email: steve@curvenote.com
+    roles:
+      - Investigation
+      - Project administration
+      - Software
+      - Visualization
+    affiliations:
+      - Agência Nacinal de Águas e Saneamento Básico - ANA      
+  - name: Dirceu S. Reis Jr.
+    orcid: 0000-0003-1787-9763
     corresponding: false
     roles: []
     affiliations:
-      - Curvenote
+      - Professor, Departamento de Engenharia Civil e Ambinetal, Universidade de Brasília
 keywords:
-  - La Palma
-  - Earthquakes
+  - Curvas IDF
+  - Informação regional
 abstract: |
   In September 2021, a significant jump in seismic activity on the island of La Palma (Canary Islands, Spain) signaled the start of a volcanic crisis that still continues at the time of writing. Earthquake data is continually collected and published by the Instituto Geográphico Nacional (IGN). ...
 plain-language-summary: |
