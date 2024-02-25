@@ -23,17 +23,17 @@ and Interchange DTD v1.2 20190208//EN" "JATS-archivearticle1.dtd">
 
 
 <title-group>
-<article-title>La Palma Earthquakes</article-title>
+<article-title>Ajuste da Distribuição Generalizada de Valores Extremos
+para a Precipitações Máximas Diárias no Brasil</article-title>
 </title-group>
 
 <contrib-group>
 <contrib contrib-type="author" corresp="yes">
-<contrib-id contrib-id-type="orcid">0000-0002-0760-5497</contrib-id>
 <name>
-<surname>Purves</surname>
-<given-names>Steve</given-names>
+<surname>Duval</surname>
+<given-names>Tomas</given-names>
 </name>
-<string-name>Steve Purves</string-name>
+<string-name>Tomas Duval</string-name>
 
 <email>steve@curvenote.com</email>
 <role vocab="https://credit.niso.org" vocab-term="investigation" vocab-term-identifier="https://credit.niso.org/contributor-roles/investigation/">Investigation</role>
@@ -45,15 +45,33 @@ administration</role>
 <xref ref-type="aff" rid="aff-1">a</xref>
 <xref ref-type="corresp" rid="cor-1">&#x002A;</xref>
 </contrib>
-<contrib contrib-type="author">
-<contrib-id contrib-id-type="orcid">0000-0002-7859-8394</contrib-id>
+<contrib contrib-type="author" corresp="yes">
+<contrib-id contrib-id-type="orcid">0000-0002-0760-5497</contrib-id>
 <name>
-<surname>Cockett</surname>
-<given-names>Rowan</given-names>
+<surname>Souza</surname>
+<given-names>Saulo AIres</given-names>
 </name>
-<string-name>Rowan Cockett</string-name>
+<string-name>Saulo AIres de Souza</string-name>
 
-<xref ref-type="aff" rid="aff-1">a</xref>
+<email>steve@curvenote.com</email>
+<role vocab="https://credit.niso.org" vocab-term="investigation" vocab-term-identifier="https://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role vocab="https://credit.niso.org" vocab-term="project
+administration" vocab-term-identifier="https://credit.niso.org/contributor-roles/project-administration/">Project
+administration</role>
+<role vocab="https://credit.niso.org" vocab-term="software" vocab-term-identifier="https://credit.niso.org/contributor-roles/software/">Software</role>
+<role vocab="https://credit.niso.org" vocab-term="visualization" vocab-term-identifier="https://credit.niso.org/contributor-roles/visualization/">Visualization</role>
+<xref ref-type="aff" rid="aff-2">b</xref>
+<xref ref-type="corresp" rid="cor-2">&#x002A;</xref>
+</contrib>
+<contrib contrib-type="author">
+<contrib-id contrib-id-type="orcid">0000-0003-1787-9763</contrib-id>
+<name>
+<surname>Jr.</surname>
+<given-names>Dirceu S. Reis</given-names>
+</name>
+<string-name>Dirceu S. Reis Jr.</string-name>
+
+<xref ref-type="aff" rid="aff-3">c</xref>
 </contrib>
 </contrib-group>
 <aff id="aff-1">
@@ -68,8 +86,35 @@ administration</role>
 
 
 </aff>
+<aff id="aff-2">
+<institution-wrap>
+<institution>Agência Nacinal de Águas e Saneamento Básico -
+ANA</institution>
+</institution-wrap>
+
+
+
+
+
+
+
+</aff>
+<aff id="aff-3">
+<institution-wrap>
+<institution>Professor, Departamento de Engenharia Civil e Ambinetal,
+Universidade de Brasília</institution>
+</institution-wrap>
+
+
+
+
+
+
+
+</aff>
 <author-notes>
 <corresp id="cor-1">steve@curvenote.com</corresp>
+<corresp id="cor-2">steve@curvenote.com</corresp>
 </author-notes>
 
 <pub-date date-type="pub" publication-format="electronic" iso-8601-date="2024-02-25">
@@ -95,8 +140,8 @@ data is continually collected and published by the Instituto Geográphico
 Nacional (IGN). …</p>
 </abstract>
 <kwd-group kwd-group-type="author">
-<kwd>La Palma</kwd>
-<kwd>Earthquakes</kwd>
+<kwd>Curvas IDF</kwd>
+<kwd>Informação regional</kwd>
 </kwd-group>
 
 
@@ -250,16 +295,16 @@ Nacional (IGN). …</p>
 <sub-article article-type="notebook" id="nb-8-nb-article">
 <front-stub>
 <title-group>
-<article-title>La Palma Earthquakes</article-title>
+<article-title>Ajuste da Distribuição Generalizada de Valores Extremos
+para a Precipitações Máximas Diárias no Brasil</article-title>
 </title-group>
 <contrib-group>
 <contrib contrib-type="author" corresp="yes">
-<contrib-id contrib-id-type="orcid">0000-0002-0760-5497</contrib-id>
 <name>
-<surname>Purves</surname>
-<given-names>Steve</given-names>
+<surname>Duval</surname>
+<given-names>Tomas</given-names>
 </name>
-<string-name>Steve Purves</string-name>
+<string-name>Tomas Duval</string-name>
 
 <email>steve@curvenote.com</email>
 <role vocab="https://credit.niso.org" vocab-term="investigation" vocab-term-identifier="https://credit.niso.org/contributor-roles/investigation/">Investigation</role>
@@ -271,15 +316,33 @@ administration</role>
 <xref ref-type="aff" rid="aff-1-nb-article">a</xref>
 <xref ref-type="corresp" rid="cor-1-nb-article">&#x002A;</xref>
 </contrib>
-<contrib contrib-type="author">
-<contrib-id contrib-id-type="orcid">0000-0002-7859-8394</contrib-id>
+<contrib contrib-type="author" corresp="yes">
+<contrib-id contrib-id-type="orcid">0000-0002-0760-5497</contrib-id>
 <name>
-<surname>Cockett</surname>
-<given-names>Rowan</given-names>
+<surname>Souza</surname>
+<given-names>Saulo AIres</given-names>
 </name>
-<string-name>Rowan Cockett</string-name>
+<string-name>Saulo AIres de Souza</string-name>
 
-<xref ref-type="aff" rid="aff-1-nb-article">a</xref>
+<email>steve@curvenote.com</email>
+<role vocab="https://credit.niso.org" vocab-term="investigation" vocab-term-identifier="https://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role vocab="https://credit.niso.org" vocab-term="project
+administration" vocab-term-identifier="https://credit.niso.org/contributor-roles/project-administration/">Project
+administration</role>
+<role vocab="https://credit.niso.org" vocab-term="software" vocab-term-identifier="https://credit.niso.org/contributor-roles/software/">Software</role>
+<role vocab="https://credit.niso.org" vocab-term="visualization" vocab-term-identifier="https://credit.niso.org/contributor-roles/visualization/">Visualization</role>
+<xref ref-type="aff" rid="aff-2-nb-article">b</xref>
+<xref ref-type="corresp" rid="cor-2-nb-article">&#x002A;</xref>
+</contrib>
+<contrib contrib-type="author">
+<contrib-id contrib-id-type="orcid">0000-0003-1787-9763</contrib-id>
+<name>
+<surname>Jr.</surname>
+<given-names>Dirceu S. Reis</given-names>
+</name>
+<string-name>Dirceu S. Reis Jr.</string-name>
+
+<xref ref-type="aff" rid="aff-3-nb-article">c</xref>
 </contrib>
 </contrib-group>
 <aff id="aff-1-nb-article">
@@ -294,8 +357,35 @@ administration</role>
 
 
 </aff>
+<aff id="aff-2-nb-article">
+<institution-wrap>
+<institution>Agência Nacinal de Águas e Saneamento Básico -
+ANA</institution>
+</institution-wrap>
+
+
+
+
+
+
+
+</aff>
+<aff id="aff-3-nb-article">
+<institution-wrap>
+<institution>Professor, Departamento de Engenharia Civil e Ambinetal,
+Universidade de Brasília</institution>
+</institution-wrap>
+
+
+
+
+
+
+
+</aff>
 <author-notes>
 <corresp id="cor-1-nb-article">steve@curvenote.com</corresp>
+<corresp id="cor-2-nb-article">steve@curvenote.com</corresp>
 </author-notes>
 <abstract>
 <p>In September 2021, a significant jump in seismic activity on the
