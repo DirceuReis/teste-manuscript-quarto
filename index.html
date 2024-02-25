@@ -194,9 +194,19 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
-  <li><a href="#sec-data-methods" id="toc-sec-data-methods" class="nav-link" data-scroll-target="#sec-data-methods"><span class="header-section-number">2</span> Data &amp; Methods</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">3</span> Conclusion</a></li>
+  <li><a href="#dados-empregados" id="toc-dados-empregados" class="nav-link active" data-scroll-target="#dados-empregados"><span class="header-section-number">1</span> Dados empregados</a>
+  <ul class="collapse">
+  <li><a href="#leitura-dos-dados" id="toc-leitura-dos-dados" class="nav-link" data-scroll-target="#leitura-dos-dados"><span class="header-section-number">1.1</span> Leitura dos dados</a></li>
+  <li><a href="#tabela-resumo" id="toc-tabela-resumo" class="nav-link" data-scroll-target="#tabela-resumo"><span class="header-section-number">1.2</span> Tabela Resumo</a></li>
+  <li><a href="#plotagem-da-estações" id="toc-plotagem-da-estações" class="nav-link" data-scroll-target="#plotagem-da-estações"><span class="header-section-number">1.3</span> Plotagem da estações</a></li>
+  </ul></li>
+  <li><a href="#resultados" id="toc-resultados" class="nav-link" data-scroll-target="#resultados"><span class="header-section-number">2</span> Resultados</a>
+  <ul class="collapse">
+  <li><a href="#estimativa-do-parâmetro-de-forma-kappa" id="toc-estimativa-do-parâmetro-de-forma-kappa" class="nav-link" data-scroll-target="#estimativa-do-parâmetro-de-forma-kappa"><span class="header-section-number">2.1</span> Estimativa do parâmetro de forma <span class="math inline">\(\kappa\)</span></a></li>
+  </ul></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="header-section-number">3</span> Introduction</a></li>
+  <li><a href="#sec-data-methods" id="toc-sec-data-methods" class="nav-link" data-scroll-target="#sec-data-methods"><span class="header-section-number">4</span> Data &amp; Methods</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">5</span> Conclusion</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="index-preview.html"><i class="bi bi-journal-code"></i>Article Notebook</a></li><li><a href="notebooks/explore-earthquakes-preview.html"><i class="bi bi-journal-code"></i>Explore Earthquakes</a></li></ul></div></nav>
@@ -210,8 +220,26 @@ window.Quarto = {
   
 
 
-<section id="introduction" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<section id="dados-empregados" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="dados-empregados"><span class="header-section-number">1</span> Dados empregados</h2>
+<section id="leitura-dos-dados" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="leitura-dos-dados"><span class="header-section-number">1.1</span> Leitura dos dados</h3>
+</section>
+<section id="tabela-resumo" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="tabela-resumo"><span class="header-section-number">1.2</span> Tabela Resumo</h3>
+</section>
+<section id="plotagem-da-estações" class="level3" data-number="1.3">
+<h3 data-number="1.3" class="anchored" data-anchor-id="plotagem-da-estações"><span class="header-section-number">1.3</span> Plotagem da estações</h3>
+</section>
+</section>
+<section id="resultados" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="resultados"><span class="header-section-number">2</span> Resultados</h2>
+<section id="estimativa-do-parâmetro-de-forma-kappa" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="estimativa-do-parâmetro-de-forma-kappa"><span class="header-section-number">2.1</span> Estimativa do parâmetro de forma <span class="math inline">\(\kappa\)</span></h3>
+</section>
+</section>
+<section id="introduction" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="introduction"><span class="header-section-number">3</span> Introduction</h2>
 <div id="cell-fig-timeline" class="cell">
 <div class="cell-output-display">
 <div id="fig-timeline" class="quarto-figure quarto-figure-center quarto-float anchored" alt="An event plot of the years of the last 8 eruptions on La Palma.">
@@ -229,7 +257,7 @@ Figure&nbsp;1: Timeline of recent earthquakes on La Palma
 <p>Based on data up to and including 1971, eruptions on La Palma happen every 79.8 years on average.</p>
 <p>Studies of the magma systems feeding the volcano, such as <span class="citation" data-cites="marrero2019">Marrero et al. (<a href="#ref-marrero2019" role="doc-biblioref">2019</a>)</span>, have proposed that there are two main magma reservoirs feeding the Cumbre Vieja volcano; one in the mantle (30-40km depth) which charges and in turn feeds a shallower crustal reservoir (10-20km depth).</p>
 <p>Eight eruptions have been recorded since the late 1400s (<a href="#fig-timeline" class="quarto-xref">Figure&nbsp;1</a>).</p>
-<p>Data and methods are discussed in <a href="#sec-data-methods" class="quarto-xref">Section&nbsp;2</a>.</p>
+<p>Data and methods are discussed in <a href="#sec-data-methods" class="quarto-xref">Section&nbsp;4</a>.</p>
 <p>Let <span class="math inline">\(x\)</span> denote the number of eruptions in a year. Then, <span class="math inline">\(x\)</span> can be modeled by a Poisson distribution</p>
 <p><span id="eq-poisson"><span class="math display">\[
 p(x) = \frac{e^{-\lambda} \lambda^{x}}{x !}
@@ -316,11 +344,11 @@ Figure&nbsp;3: Locations of earthquakes on La Palma since 2017
 </div>
 <p><a href="#fig-spatial-plot" class="quarto-xref">Figure&nbsp;3</a> shows the location of recent Earthquakes on La Palma.</p>
 </section>
-<section id="sec-data-methods" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="sec-data-methods"><span class="header-section-number">2</span> Data &amp; Methods</h2>
+<section id="sec-data-methods" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="sec-data-methods"><span class="header-section-number">4</span> Data &amp; Methods</h2>
 </section>
-<section id="conclusion" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">3</span> Conclusion</h2>
+<section id="conclusion" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">5</span> Conclusion</h2>
 </section>
 <section id="references" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
@@ -761,7 +789,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","loop":false,"selector":".lightbox"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

@@ -152,8 +152,29 @@ Nacional (IGN). …</p>
 </front>
 
 <body>
+<sec id="dados-empregados">
+  <title>1 Dados empregados</title>
+  <sec id="leitura-dos-dados">
+    <title>1.1 Leitura dos dados</title>
+  </sec>
+  <sec id="tabela-resumo">
+    <title>1.2 Tabela Resumo</title>
+  </sec>
+  <sec id="plotagem-da-estações">
+    <title>1.3 Plotagem da estações</title>
+  </sec>
+</sec>
+<sec id="resultados">
+  <title>2 Resultados</title>
+  <sec id="estimativa-do-parâmetro-de-forma-kappa">
+    <title>2.1 Estimativa do parâmetro de forma
+    <inline-formula><alternatives>
+    <tex-math><![CDATA[\kappa]]></tex-math>
+    <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>κ</mml:mi></mml:math></alternatives></inline-formula></title>
+  </sec>
+</sec>
 <sec id="introduction">
-  <title>1 Introduction</title>
+  <title>3 Introduction</title>
   <fig id="fig-timeline">
     <caption><p>Figure 1: Timeline of recent earthquakes on La
     Palma</p></caption>
@@ -170,7 +191,7 @@ Nacional (IGN). …</p>
   <p>Eight eruptions have been recorded since the late 1400s
   (<xref alt="Figure 1" rid="fig-timeline">Figure 1</xref>).</p>
   <p>Data and methods are discussed in
-  <xref alt="Section 2" rid="sec-data-methods">Section 2</xref>.</p>
+  <xref alt="Section 4" rid="sec-data-methods">Section 4</xref>.</p>
   <p>Let <inline-formula><alternatives>
   <tex-math><![CDATA[x]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>x</mml:mi></mml:math></alternatives></inline-formula>
@@ -260,10 +281,10 @@ Nacional (IGN). …</p>
   the location of recent Earthquakes on La Palma.</p>
 </sec>
 <sec id="sec-data-methods">
-  <title>2 Data &amp; Methods</title>
+  <title>4 Data &amp; Methods</title>
 </sec>
 <sec id="conclusion">
-  <title>3 Conclusion</title>
+  <title>5 Conclusion</title>
 </sec>
 </body>
 
@@ -397,8 +418,29 @@ Nacional (IGN). …</p>
 </front-stub>
 
 <body>
+<sec id="dados-empregados-nb-article">
+  <title>1 Dados empregados</title>
+  <sec id="leitura-dos-dados-nb-article">
+    <title>1.1 Leitura dos dados</title>
+  </sec>
+  <sec id="tabela-resumo-nb-article">
+    <title>1.2 Tabela Resumo</title>
+  </sec>
+  <sec id="plotagem-da-estações-nb-article">
+    <title>1.3 Plotagem da estações</title>
+  </sec>
+</sec>
+<sec id="resultados-nb-article">
+  <title>2 Resultados</title>
+  <sec id="estimativa-do-parâmetro-de-forma-kappa-nb-article">
+    <title>2.1 Estimativa do parâmetro de forma
+    <inline-formula><alternatives>
+    <tex-math><![CDATA[\kappa]]></tex-math>
+    <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>κ</mml:mi></mml:math></alternatives></inline-formula></title>
+  </sec>
+</sec>
 <sec id="introduction-nb-article">
-  <title>1 Introduction</title>
+  <title>3 Introduction</title>
   <sec id="nb-code-cell-1-nb-article" specific-use="notebook-code">
   <code language="r script">eruptions &lt;- c(1492, 1585, 1646, 1677, 1712, 1949, 1971, 2021)
 n_eruptions &lt;- length(eruptions)</code>
@@ -433,7 +475,7 @@ avg_years_between_eruptions</code>
   <p>Eight eruptions have been recorded since the late 1400s
   (<xref alt="Figure 1" rid="fig-timeline-nb-article">Figure 1</xref>).</p>
   <p>Data and methods are discussed in
-  <xref alt="Section 2" rid="sec-data-methods-nb-article">Section 2</xref>.</p>
+  <xref alt="Section 4" rid="sec-data-methods-nb-article">Section 4</xref>.</p>
   <p>Let <inline-formula><alternatives>
   <tex-math><![CDATA[x]]></tex-math>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>x</mml:mi></mml:math></alternatives></inline-formula>
@@ -533,10 +575,10 @@ avg_years_between_eruptions</code>
   the location of recent Earthquakes on La Palma.</p>
 </sec>
 <sec id="sec-data-methods-nb-article">
-  <title>2 Data &amp; Methods</title>
+  <title>4 Data &amp; Methods</title>
 </sec>
 <sec id="conclusion-nb-article">
-  <title>3 Conclusion</title>
+  <title>5 Conclusion</title>
 </sec>
 </body>
 
