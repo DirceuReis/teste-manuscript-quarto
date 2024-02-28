@@ -53,6 +53,8 @@ number-sections: true
 
 ### Plotagem da estações 
 
+{{< embed notebooks/explore_daily_precip.qmd#fig-number-stations >}}
+
 ## Resultados
 
 ### Estimativa do parâmetro de forma $\kappa$ 
