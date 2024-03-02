@@ -1,6 +1,7 @@
 ---
 title: Explore Annual Maximum daily Precipitation in Brazil
 author: To be defined
+html-table-processing: none
 ---
 
 ```{r}
@@ -9,6 +10,7 @@ author: To be defined
 
 library(tidyverse)
 library(lubridate)
+library(gt)
 ```
 
 
@@ -25,7 +27,13 @@ O código abaixo lê o arquivo original gerado pelo Eng. Saulo Aires de Souza, q
 Pd_metadata <-
   read.csv("DADOS_CONV_SAULO.dat", header = FALSE, sep = ";",
            nrows = 15, dec = ".",na.strings = "null",
-           fileEncoding = "latin1")
+           fileEncoding = "latin1") #,
+           #colClasses = c("integer",
+          #                "integer","integer","numeric",
+           #               "numeric", "numeric","numeric",
+            #              "integer","char","char",
+             #             "char","char","char",
+              #            "char","char"))
 
 # Extract Dates and Annual Maximum Daily Precipitation (20th to 112nd lines)
 Pd_tmp <-
@@ -67,6 +75,17 @@ for(i in seq(from = 1, to = ncol(Pd_metadata) - 1, by = 2)){
 # 425600 pra 156529
 Pd <- Pd[-which(is.na(Pd$Pdmax) & is.na(Pd$Date)),]
 
+Pd <- Pd %>%
+    mutate( Date = as.Date(Date,"%d/%m/%Y"),
+            BaciaCodigo = as.integer(BaciaCodigo),
+            SubBaciaCodigo = as.integer(SubBaciaCodigo),
+            Estacao_codigo = as.integer(Estacao_codigo),
+            Latitude = as.numeric(Latitude),
+            Longitude = as.numeric(Longitude),
+            Altitude = as.numeric(Altitude))
+
+
+
 saveRDS(Pd, "Pd.rds")
 
 rm(metadata_proxy)
@@ -78,18 +97,74 @@ rm(Pd_tmp)
 #| label: gera-resumo-dados  
 #| echo: true
 
-# Load te data
+# Load the data
 Pd <- readRDS("Pd.rds")
 
 # Create a new column with the year of the observation right after the date
-Pd <- Pd %>% mutate(Ano = year(as.Date(Date,"%d/%m/%Y")), .after = Date)
+Pd <- Pd %>% mutate(Ano = year(Date), .after = Date)
 
-n_stations_year <- Pd %>% select(c(2,4)) %>%
+n_stations_year <- Pd %>% 
   count(Ano)
 
-n_stations_year_bacia <- Pd %>% select(c(2,4)) %>%
+n_stations_year_bacia <- Pd %>% 
   count(Ano,BaciaCodigo)
 
+record_length_station <- Pd %>% #select(c(4,6:8)) %>%
+  group_by(Estacao_codigo,BaciaCodigo) %>%
+  summarise(n = n())
+
+Tab_resumo_RL <- record_length_station %>%
+  group_by(BaciaCodigo) %>%
+  summarise(min = min(n),
+            Q10 = floor(quantile(n,probs = 0.10)),
+            Q25 = floor(quantile(n,probs = 0.25)),
+            median = quantile(n,probs = 0.50),
+            Q75 = floor(quantile(n,probs = 0.75)),
+            Q90 = floor(quantile(n,probs = 0.90)),
+            max = max(n),
+            media = mean(n))
+
+
+
+
+```
+
+
+Criando uma Tabela para o resumo do tamanho das séries
+
+```{r}
+#| label: tbl-record-length-statistics
+#| tbl-cap: "Resumo das estatísticas do tamanho das séries históricas das estações Plu por bacia hidrográfica"
+#| tab-alt: "Resumo estatístico"
+#| echo: false
+#| output: true
+
+# Create a display table showing ten of
+# the largest islands in the world
+gt_tbl <- gt(Tab_resumo_RL,rowname_col = "BaciaCodigo") %>%
+    tab_header(
+    title = "Resumo estatístico do tamanho das séries históricas",
+    subtitle = "Informação por bacia hidrográfica"
+  ) %>%
+  tab_source_note(
+    source_note = "Fonte dos dados: Hidroweb da ANA (2023)."
+  ) %>%
+   tab_stubhead(label = "Bacia") %>%
+  tab_spanner(
+    label = "Tamanho da série (n)",
+    columns = c(min, Q10, Q25, median, Q75, Q90, max, media)
+  ) %>%
+   cols_label(
+    Q10 = html("n<sub>10</sub>"),
+    Q25 = html("n<sub>25</sub>"),
+    median = html("n<sub>median</sub>"),
+    Q75 = html("n<sub>75</sub>"),
+    Q90 = html("n<sub>90</sub>")
+   )
+    
+    
+# Show the gt Table
+gt_tbl
 
 ```
 
@@ -98,9 +173,11 @@ n_stations_year_bacia <- Pd %>% select(c(2,4)) %>%
 #| fig-cap: "Número de estações Plu no Brasil"
 #| fig-alt: "Estações Plu no Brasil com disponibilidade de chuvas diárias."
 
+# Criação de plotagem do número de estações com valores diários de precipitação
+# ao longo dos anos.
 
 ggplot() +
-  geom_line(data = n_stations_year,aes(Ano,n),colour = 'black', size = 1) +
+  geom_line(data = n_stations_year,aes(Ano,n),colour = 'black', linewidth = 1) +
    labs(title = "Chuva Máxima Diária no Brasil", subtitle = "Número de estações",
        caption = "fonte dos dados: ANA (2022)",
        x = "Datas", y = "Estações") +
@@ -108,3 +185,38 @@ ggplot() +
   
 ```
 
+
+```{r}
+#| label: fig-number-stations-bacia
+#| fig-cap: "Número de estações Plu no Brasil por Bacia"
+#| fig-alt: "Estações Plu no Brasil com disponibilidade de chuvas diárias."
+
+# Criação de plotagem do número de estações, por bacia hidrográfica, com valores
+# diários de precipitação ao longo dos anos.
+
+ggplot() +
+  geom_line(data = n_stations_year_bacia,aes(Ano,n,col = BaciaCodigo), linewidth = 1) +
+   labs(title = "Chuva Máxima Diária no Brasil", subtitle = "Número de estações por bacia",
+       caption = "fonte dos dados: ANA (2022)",
+       x = "Datas", y = "Estações", col = "Bacia") +
+  theme_bw()
+  
+```
+
+```{r}
+#| label: fig-cdf_record-length
+#| fig-cap: "Distribuição de probabilidades acumuladas do tamanho de séries históricas das estações pluviométricas no Brasil"
+#| fig-alt: "Estações Plu no Brasil com disponibilidade de chuvas diárias."
+
+
+# Criação de plotagem do número de estações, por bacia hidrográfica, com valores
+# diários de precipitação ao longo dos anos.
+
+ggplot() +
+  geom_line(data = n_stations_year_bacia,aes(Ano,n,col = BaciaCodigo), size = 1) +
+   labs(title = "Chuva Máxima Diária no Brasil", subtitle = "Número de estações por bacia",
+       caption = "fonte dos dados: ANA (2022)",
+       x = "Datas", y = "Estações", col = "Bacia") +
+  theme_bw()
+  
+```
