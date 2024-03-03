@@ -45,20 +45,25 @@ citation:
   container-title: Earth and Space Science
 number-sections: true
 ---
+
 ## Dados empregados
 
-### Leitura dos dados 
+### Leitura dos dados
 
 ### Tabela Resumo
 
-### Plotagem da estações 
+{{< embed notebooks/explore_daily_precip.qmd#tbl-record-length-statistics >}}
+
+
+### Plotagem da estações
+
+A @fig-number-stations apresenta a evolução temporal do número de estações que contém valores de precipitação diária máxima anual.
 
 {{< embed notebooks/explore_daily_precip.qmd#fig-number-stations >}}
 
 ## Resultados
 
-### Estimativa do parâmetro de forma $\kappa$ 
-
+### Estimativa do parâmetro de forma $\kappa$
 
 ## Introduction
 

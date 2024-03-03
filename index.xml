@@ -117,10 +117,10 @@ Universidade de Brasília</institution>
 <corresp id="cor-2">steve@curvenote.com</corresp>
 </author-notes>
 
-<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2024-02-28">
+<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2024-03-03">
 <year>2024</year>
-<month>2</month>
-<day>28</day>
+<month>3</month>
+<day>3</day>
 </pub-date>
 
 
@@ -159,13 +159,20 @@ Nacional (IGN). …</p>
   </sec>
   <sec id="tabela-resumo">
     <title>1.2 Tabela Resumo</title>
+    <fig id="tbl-record-length-statistics">
+      <caption><p>Table 1: Resumo das estatísticas do tamanho das séries
+      históricas das estações Plu por bacia hidrográfica</p></caption>
+    </fig>
   </sec>
   <sec id="plotagem-da-estações">
     <title>1.3 Plotagem da estações</title>
+    <p>A <xref alt="Figure 1" rid="fig-number-stations">Figure 1</xref>
+    apresenta a evolução temporal do número de estações que contém
+    valores de precipitação diária máxima anual.</p>
     <fig id="fig-number-stations">
       <caption><p>Figure 1: Número de estações Plu no
       Brasil</p></caption>
-      <graphic mimetype="image" mime-subtype="png" xlink:href="index_files/figure-jats/notebooks-explore_daily_precip-fig-number-stations-output-1.png" />
+      <graphic mimetype="image" mime-subtype="png" xlink:href="index_files/figure-jats/notebooks-explore_daily_precip-fig-number-stations-output-2.png" />
     </fig>
   </sec>
 </sec>
@@ -220,7 +227,7 @@ Nacional (IGN). …</p>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>t</mml:mi></mml:math></alternatives></inline-formula>
   years can be calculated.</p>
   <fig id="tbl-history">
-    <caption><p>Table 1: Recent historic eruptions on La
+    <caption><p>Table 2: Recent historic eruptions on La
     Palma</p></caption>
     <table-wrap>
       <table>
@@ -267,7 +274,7 @@ Nacional (IGN). …</p>
       </table>
     </table-wrap>
   </fig>
-  <p><xref alt="Table 1" rid="tbl-history">Table 1</xref> summarises the
+  <p><xref alt="Table 2" rid="tbl-history">Table 2</xref> summarises the
   eruptions recorded since the colonization of the islands by Europeans
   in the late 1400s.</p>
   <fig id="fig-map">
@@ -430,21 +437,64 @@ Nacional (IGN). …</p>
   </sec>
   <sec id="tabela-resumo-nb-article">
     <title>1.2 Tabela Resumo</title>
+    <sec id="nb-code-cell-1-nb-article" specific-use="notebook-code">
+    <code language="python"># Create a display table showing ten of
+# the largest islands in the world
+gt_tbl &lt;- gt(Tab_resumo_RL,rowname_col = &quot;BaciaCodigo&quot;) %&gt;%
+    tab_header(
+    title = &quot;Resumo estatístico do tamanho das séries históricas&quot;,
+    subtitle = &quot;Informação por bacia hidrográfica&quot;
+  ) %&gt;%
+  tab_source_note(
+    source_note = &quot;Fonte dos dados: Hidroweb da ANA (2023).&quot;
+  ) %&gt;%
+   tab_stubhead(label = &quot;Bacia&quot;) %&gt;%
+  tab_spanner(
+    label = &quot;Tamanho da série (n)&quot;,
+    columns = c(min, Q10, Q25, median, Q75, Q90, max, media)
+  ) %&gt;%
+   cols_label(
+    Q10 = html(&quot;n&lt;sub&gt;10&lt;/sub&gt;&quot;),
+    Q25 = html(&quot;n&lt;sub&gt;25&lt;/sub&gt;&quot;),
+    median = html(&quot;n&lt;sub&gt;median&lt;/sub&gt;&quot;),
+    Q75 = html(&quot;n&lt;sub&gt;75&lt;/sub&gt;&quot;),
+    Q90 = html(&quot;n&lt;sub&gt;90&lt;/sub&gt;&quot;)
+   )
+    
+    
+# Show the gt Table
+gt_tbl</code>
+    <fig id="tbl-record-length-statistics-nb-article">
+      <caption><p>Table 1: Resumo das estatísticas do tamanho das séries
+      históricas das estações Plu por bacia hidrográfica</p></caption>
+      <sec id="nb-code-cell-1-output-0-nb-article" specific-use="notebook-output">
+      </sec>
+    </fig>
+    </sec>
   </sec>
   <sec id="plotagem-da-estações-nb-article">
     <title>1.3 Plotagem da estações</title>
+    <p>A <xref alt="Figure 1" rid="fig-number-stations-nb-article">Figure 1</xref>
+    apresenta a evolução temporal do número de estações que contém
+    valores de precipitação diária máxima anual.</p>
     <sec id="cell-fig-number-stations-nb-article" specific-use="notebook-code">
-    <code language="python">ggplot() +
-  geom_line(data = n_stations_year,aes(Ano,n),colour = 'black', size = 1) +
+    <code language="python"># Criação de plotagem do número de estações com valores diários de precipitação
+# ao longo dos anos.
+
+ggplot() +
+  geom_line(data = n_stations_year,aes(Ano,n),colour = 'black', linewidth = 1) +
    labs(title = &quot;Chuva Máxima Diária no Brasil&quot;, subtitle = &quot;Número de estações&quot;,
        caption = &quot;fonte dos dados: ANA (2022)&quot;,
        x = &quot;Datas&quot;, y = &quot;Estações&quot;) +
   theme_bw()</code>
     <sec id="cell-fig-number-stations-output-0-nb-article" specific-use="notebook-output">
+    <preformat>Warning: Ignoring unknown parameters: linewidth</preformat>
+    </sec>
+    <sec id="cell-fig-number-stations-output-1-nb-article" specific-use="notebook-output">
     <fig id="fig-number-stations-nb-article">
       <caption><p>Figure 1: Número de estações Plu no
       Brasil</p></caption>
-      <graphic mimetype="image" mime-subtype="png" xlink:href="index_files/figure-jats/notebooks-explore_daily_precip-fig-number-stations-output-1.png" />
+      <graphic mimetype="image" mime-subtype="png" xlink:href="index_files/figure-jats/notebooks-explore_daily_precip-fig-number-stations-output-2.png" />
     </fig>
     </sec>
     </sec>
@@ -461,7 +511,7 @@ Nacional (IGN). …</p>
 </sec>
 <sec id="introduction-nb-article">
   <title>3 Introduction</title>
-  <sec id="nb-code-cell-1-nb-article" specific-use="notebook-code">
+  <sec id="nb-code-cell-2-nb-article" specific-use="notebook-code">
   <code language="r script">eruptions &lt;- c(1492, 1585, 1646, 1677, 1712, 1949, 1971, 2021)
 n_eruptions &lt;- length(eruptions)</code>
   </sec>
@@ -477,10 +527,10 @@ box()</code>
     <graphic mimetype="image" mime-subtype="png" xlink:href="index_files/figure-jats/fig-timeline-1.png" />
   </fig>
   </sec>
-  <sec id="nb-code-cell-2-nb-article" specific-use="notebook-code">
+  <sec id="nb-code-cell-3-nb-article" specific-use="notebook-code">
   <code language="r script">avg_years_between_eruptions &lt;- mean(diff(eruptions[-n_eruptions]))
 avg_years_between_eruptions</code>
-  <sec id="nb-code-cell-2-output-0-nb-article" specific-use="notebook-output">
+  <sec id="nb-code-cell-3-output-0-nb-article" specific-use="notebook-output">
   <preformat>[1] 79.83333</preformat>
   </sec>
   </sec>
@@ -519,7 +569,7 @@ avg_years_between_eruptions</code>
   <mml:math display="inline" xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>t</mml:mi></mml:math></alternatives></inline-formula>
   years can be calculated.</p>
   <fig id="tbl-history-nb-article">
-    <caption><p>Table 1: Recent historic eruptions on La
+    <caption><p>Table 2: Recent historic eruptions on La
     Palma</p></caption>
     <table-wrap>
       <table>
@@ -566,7 +616,7 @@ avg_years_between_eruptions</code>
       </table>
     </table-wrap>
   </fig>
-  <p><xref alt="Table 1" rid="tbl-history-nb-article">Table 1</xref> summarises the
+  <p><xref alt="Table 2" rid="tbl-history-nb-article">Table 2</xref> summarises the
   eruptions recorded since the colonization of the islands by Europeans
   in the late 1400s.</p>
   <fig id="fig-map-nb-article">
@@ -657,6 +707,12 @@ library(tidyverse)
 <code language="r script">
 library(lubridate)
 </code>
+<code language="r script">
+library(gt)
+</code>
+<code language="r script">
+require(knitr)
+</code>
 <sec id="nb-code-cell-1-output-0-nb-1" specific-use="notebook-output">
 <preformat>Warning: package 'tidyverse' was built under R version 4.2.2</preformat>
 </sec>
@@ -681,6 +737,12 @@ The following objects are masked from 'package:base':
 
     date, intersect, setdiff, union</preformat>
 </sec>
+<sec id="nb-code-cell-1-output-4-nb-1" specific-use="notebook-output">
+<preformat>Warning: package 'gt' was built under R version 4.2.1</preformat>
+</sec>
+<sec id="nb-code-cell-1-output-5-nb-1" specific-use="notebook-output">
+<preformat>Carregando pacotes exigidos: knitr</preformat>
+</sec>
 </sec>
 <p>O código abaixo lê o arquivo original gerado pelo Eng. Saulo Aires de
 Souza, que contém os valores das precipitações máximas diárias e
@@ -694,7 +756,13 @@ arquivo RDS contido no diretório.</p>
 Pd_metadata &lt;-
   read.csv(&quot;DADOS_CONV_SAULO.dat&quot;, header = FALSE, sep = &quot;;&quot;,
            nrows = 15, dec = &quot;.&quot;,na.strings = &quot;null&quot;,
-           fileEncoding = &quot;latin1&quot;)
+           fileEncoding = &quot;latin1&quot;) #,
+           #colClasses = c(&quot;integer&quot;,
+          #                &quot;integer&quot;,&quot;integer&quot;,&quot;numeric&quot;,
+           #               &quot;numeric&quot;, &quot;numeric&quot;,&quot;numeric&quot;,
+            #              &quot;integer&quot;,&quot;char&quot;,&quot;char&quot;,
+             #             &quot;char&quot;,&quot;char&quot;,&quot;char&quot;,
+              #            &quot;char&quot;,&quot;char&quot;))
 
 # Extract Dates and Annual Maximum Daily Precipitation (20th to 112nd lines)
 Pd_tmp &lt;-
@@ -736,6 +804,17 @@ for(i in seq(from = 1, to = ncol(Pd_metadata) - 1, by = 2)){
 # 425600 pra 156529
 Pd &lt;- Pd[-which(is.na(Pd$Pdmax) &amp; is.na(Pd$Date)),]
 
+Pd &lt;- Pd %&gt;%
+    mutate( Date = as.Date(Date,&quot;%d/%m/%Y&quot;),
+            BaciaCodigo = as.integer(BaciaCodigo),
+            SubBaciaCodigo = as.integer(SubBaciaCodigo),
+            Estacao_codigo = as.integer(Estacao_codigo),
+            Latitude = as.numeric(Latitude),
+            Longitude = as.numeric(Longitude),
+            Altitude = as.numeric(Altitude))
+
+
+
 saveRDS(Pd, &quot;Pd.rds&quot;)
 
 rm(metadata_proxy)
@@ -745,23 +824,81 @@ rm(Pd_tmp)
 </sec>
 <sec id="nb-code-cell-3-nb-1" specific-use="notebook-code">
 <code language="r script">
-# Load te data
+# Load the data
 Pd &lt;- readRDS(&quot;Pd.rds&quot;)
 
 # Create a new column with the year of the observation right after the date
-Pd &lt;- Pd %&gt;% mutate(Ano = year(as.Date(Date,&quot;%d/%m/%Y&quot;)), .after = Date)
+Pd &lt;- Pd %&gt;% mutate(Ano = year(Date), .after = Date)
 
-n_stations_year &lt;- Pd %&gt;% select(c(2,4)) %&gt;%
+n_stations_year &lt;- Pd %&gt;% 
   count(Ano)
 
-n_stations_year_bacia &lt;- Pd %&gt;% select(c(2,4)) %&gt;%
+n_stations_year_bacia &lt;- Pd %&gt;% 
   count(Ano,BaciaCodigo)
+
+record_length_station &lt;- Pd %&gt;% #select(c(4,6:8)) %&gt;%
+  group_by(Estacao_codigo,BaciaCodigo) %&gt;%
+  summarise(n = n())
 </code>
+<code language="r script">
+Tab_resumo_RL &lt;- record_length_station %&gt;%
+  group_by(BaciaCodigo) %&gt;%
+  summarise(min = min(n),
+            Q10 = floor(quantile(n,probs = 0.10)),
+            Q25 = floor(quantile(n,probs = 0.25)),
+            median = quantile(n,probs = 0.50),
+            Q75 = floor(quantile(n,probs = 0.75)),
+            Q90 = floor(quantile(n,probs = 0.90)),
+            max = max(n),
+            media = mean(n))
+</code>
+<sec id="nb-code-cell-3-output-0-nb-1" specific-use="notebook-output">
+<preformat>`summarise()` has grouped output by 'Estacao_codigo'. You can override using
+the `.groups` argument.</preformat>
+</sec>
+</sec>
+<p>Criando uma Tabela para o resumo do tamanho das séries</p>
+<sec id="nb-code-cell-4-nb-1" specific-use="notebook-code">
+<code language="r script">
+# Create a display table showing ten of
+# the largest islands in the world
+gt_tbl &lt;- gt(Tab_resumo_RL,rowname_col = &quot;BaciaCodigo&quot;) %&gt;%
+    tab_header(
+    title = &quot;Resumo estatístico do tamanho das séries históricas&quot;,
+    subtitle = &quot;Informação por bacia hidrográfica&quot;
+  ) %&gt;%
+  tab_source_note(
+    source_note = &quot;Fonte dos dados: Hidroweb da ANA (2023).&quot;
+  ) %&gt;%
+   tab_stubhead(label = &quot;Bacia&quot;) %&gt;%
+  tab_spanner(
+    label = &quot;Tamanho da série (n)&quot;,
+    columns = c(min, Q10, Q25, median, Q75, Q90, max, media)
+  ) %&gt;%
+   cols_label(
+    Q10 = html(&quot;n&lt;sub&gt;10&lt;/sub&gt;&quot;),
+    Q25 = html(&quot;n&lt;sub&gt;25&lt;/sub&gt;&quot;),
+    median = html(&quot;n&lt;sub&gt;median&lt;/sub&gt;&quot;),
+    Q75 = html(&quot;n&lt;sub&gt;75&lt;/sub&gt;&quot;),
+    Q90 = html(&quot;n&lt;sub&gt;90&lt;/sub&gt;&quot;)
+   )
+    
+    
+# Show the gt Table
+gt_tbl
+</code>
+<fig id="tbl-record-length-statistics-nb-1">
+  <caption><p>Resumo das estatísticas do tamanho das séries históricas
+  das estações Plu por bacia hidrográfica</p></caption>
+</fig>
 </sec>
 <sec id="cell-fig-number-stations-nb-1" specific-use="notebook-code">
 <code language="r script">
+# Criação de plotagem do número de estações com valores diários de precipitação
+# ao longo dos anos.
+
 ggplot() +
-  geom_line(data = n_stations_year,aes(Ano,n),colour = 'black', size = 1) +
+  geom_line(data = n_stations_year,aes(Ano,n),colour = 'black', linewidth = 1) +
    labs(title = &quot;Chuva Máxima Diária no Brasil&quot;, subtitle = &quot;Número de estações&quot;,
        caption = &quot;fonte dos dados: ANA (2022)&quot;,
        x = &quot;Datas&quot;, y = &quot;Estações&quot;) +
@@ -770,6 +907,47 @@ ggplot() +
 <fig id="fig-number-stations-nb-1">
   <caption><p>Número de estações Plu no Brasil</p></caption>
   <graphic mimetype="image" mime-subtype="png" xlink:href="explore_daily_precip_files/figure-jats/fig-number-stations-1.png" />
+</fig>
+<sec id="cell-fig-number-stations-output-0-nb-1" specific-use="notebook-output">
+<preformat>Warning: Ignoring unknown parameters: linewidth</preformat>
+</sec>
+</sec>
+<sec id="cell-fig-number-stations-bacia-nb-1" specific-use="notebook-code">
+<code language="r script">
+# Criação de plotagem do número de estações, por bacia hidrográfica, com valores
+# diários de precipitação ao longo dos anos.
+
+ggplot() +
+  geom_line(data = n_stations_year_bacia,aes(Ano,n,col = BaciaCodigo), linewidth = 1) +
+   labs(title = &quot;Chuva Máxima Diária no Brasil&quot;, subtitle = &quot;Número de estações por bacia&quot;,
+       caption = &quot;fonte dos dados: ANA (2022)&quot;,
+       x = &quot;Datas&quot;, y = &quot;Estações&quot;, col = &quot;Bacia&quot;) +
+  theme_bw()
+</code>
+<fig id="fig-number-stations-bacia-nb-1">
+  <caption><p>Número de estações Plu no Brasil por Bacia</p></caption>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="explore_daily_precip_files/figure-jats/fig-number-stations-bacia-1.png" />
+</fig>
+<sec id="cell-fig-number-stations-bacia-output-0-nb-1" specific-use="notebook-output">
+<preformat>Warning: Ignoring unknown parameters: linewidth</preformat>
+</sec>
+</sec>
+<sec id="cell-fig-cdf_record-length-nb-1" specific-use="notebook-code">
+<code language="r script">
+# Criação de plotagem do número de estações, por bacia hidrográfica, com valores
+# diários de precipitação ao longo dos anos.
+
+ggplot() +
+  geom_line(data = n_stations_year_bacia,aes(Ano,n,col = BaciaCodigo), size = 1) +
+   labs(title = &quot;Chuva Máxima Diária no Brasil&quot;, subtitle = &quot;Número de estações por bacia&quot;,
+       caption = &quot;fonte dos dados: ANA (2022)&quot;,
+       x = &quot;Datas&quot;, y = &quot;Estações&quot;, col = &quot;Bacia&quot;) +
+  theme_bw()
+</code>
+<fig id="fig-cdf_record-length-nb-1">
+  <caption><p>Distribuição de probabilidades acumuladas do tamanho de
+  séries históricas das estações pluviométricas no Brasil</p></caption>
+  <graphic mimetype="image" mime-subtype="png" xlink:href="explore_daily_precip_files/figure-jats/fig-cdf_record-length-1.png" />
 </fig>
 </sec>
 </body>
