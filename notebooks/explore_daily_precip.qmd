@@ -11,6 +11,7 @@ html-table-processing: none
 library(tidyverse)
 library(lubridate)
 library(gt)
+require(knitr)
 ```
 
 
