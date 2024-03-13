@@ -117,10 +117,10 @@ Universidade de Brasília</institution>
 <corresp id="cor-2">steve@curvenote.com</corresp>
 </author-notes>
 
-<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2024-03-03">
+<pub-date date-type="pub" publication-format="electronic" iso-8601-date="2024-03-13">
 <year>2024</year>
 <month>3</month>
-<day>3</day>
+<day>13</day>
 </pub-date>
 
 
@@ -325,7 +325,7 @@ Nacional (IGN). …</p>
 </ref-list>
 </back>
 
-<sub-article article-type="notebook" id="nb-12-nb-article">
+<sub-article article-type="notebook" id="nb-16-nb-article">
 <front-stub>
 <title-group>
 <article-title>Ajuste da Distribuição Generalizada de Valores Extremos
@@ -711,7 +711,7 @@ library(lubridate)
 library(gt)
 </code>
 <code language="r script">
-require(knitr)
+library(optimx)
 </code>
 <sec id="nb-code-cell-1-output-0-nb-1" specific-use="notebook-output">
 <preformat>Warning: package 'tidyverse' was built under R version 4.2.2</preformat>
@@ -741,6 +741,228 @@ The following objects are masked from 'package:base':
 <preformat>Warning: package 'gt' was built under R version 4.2.1</preformat>
 </sec>
 <sec id="nb-code-cell-1-output-5-nb-1" specific-use="notebook-output">
+<preformat>Warning: package 'optimx' was built under R version 4.2.3</preformat>
+</sec>
+</sec>
+<sec id="nb-code-cell-2-nb-1" specific-use="notebook-code">
+<code language="r script">
+alpha &lt;- 2.2
+csi &lt;- 7.9
+kappa &lt;- -0.05
+
+set.seed(123)
+p &lt;- runif(30,0,1)
+
+# Generate a GEV series
+Q &lt;- csi + alpha/kappa*(1-(-log(p))^kappa)
+</code>
+</sec>
+<sec id="nb-code-cell-3-nb-1" specific-use="notebook-code">
+<code language="r script">
+L_MOM_GEV &lt;- function(Q){
+  ordered_Q &lt;- Q[order(Q)]
+  b_0 &lt;- mean(ordered_Q)
+  Cv &lt;- sd(ordered_Q)/b_0
+  n &lt;- length(ordered_Q)
+  aux &lt;- seq(from = 1,to = n)
+  aux2 &lt;- (aux - 1)/(n*(n-1))
+  b_1 &lt;- sum(aux2*ordered_Q)
+  aux3 &lt;- aux - 2
+  aux3[aux3 &lt; 0] &lt;- 0 
+  b_2 &lt;- sum(aux2*aux3*ordered_Q/(n-2))
+
+  lambda_1 &lt;- b_0
+  lambda_2 &lt;- 2*b_1 - b_0
+  lambda_3 = 6*b_2 -6*b_1 + b_0
+
+  tao_3 &lt;- lambda_3/lambda_2
+
+  c &lt;- (2*b_1 - b_0)/(3*b_2 - b_0) - log(2)/log(3)
+
+  kappa_L &lt;- 7.859*c + 2.9554*(c^2)
+  alpha_L &lt;- lambda_2*kappa_L/((1 - 2^(-kappa_L))*(gamma(1 + kappa_L)))
+  csi_L &lt;- lambda_1 - alpha_L/kappa_L*(1 - gamma(1 + kappa_L))
+
+  return(c(csi_L, alpha_L, kappa_L))
+}
+</code>
+</sec>
+<sec id="nb-code-cell-4-nb-1" specific-use="notebook-code">
+<code language="r script">
+log_Like_GEV &lt;- function(par,Q){
+  n &lt;- length(Q)
+  csi &lt;- par[1]
+  alpha &lt;- par[2]
+  kappa &lt;- par[3]
+  
+  y &lt;- 1 - kappa/alpha*(Q - csi);
+  term2 = (1/kappa - 1)*log(y) - y^(1/kappa);
+
+  if (kappa &lt; 0) {
+    if (min(Q) &lt; csi + alpha/kappa){
+      likelihood &lt;- 1e6
+      } else {
+        likelihood &lt;- -(-n*log(alpha) + sum(term2)) 
+      }
+    }
+  if (kappa &gt; 0) {
+    if (max(Q) &gt; csi + alpha/kappa){
+      likelihood &lt;- 1e6
+    } else {
+        likelihood &lt;- -(-n*log(alpha) + sum(term2))
+    }
+  }
+  return(likelihood)
+}
+</code>
+</sec>
+<sec id="nb-code-cell-5-nb-1" specific-use="notebook-code">
+<code language="r script">
+log_GLike_GEV &lt;- function(par,Q,meanK,varK){
+  n &lt;- length(Q)
+  csi &lt;- par[1]
+  alpha &lt;- par[2]
+  kappa &lt;- par[3]
+  
+  a &lt;- 0.5
+  b &lt;- meanK + a;
+  p &lt;- b^2*(1-b)/varK - b;
+  q = p*(1/b - 1);
+
+  y &lt;- 1 - kappa/alpha*(Q - csi);
+  term2 = (1/kappa - 1)*log(y) - y^(1/kappa);
+
+  if (kappa &lt; 0) {
+    if (min(Q) &lt; csi + alpha/kappa){
+      likelihood &lt;- 1e6
+    } else {
+        likelihood &lt;- -(-n*log(alpha) + sum(term2) +
+                       (p - 1)*log(a + kappa) + (q - 1)*log(a - kappa)) 
+    }
+    }
+  if (kappa &gt; 0) {
+    if (max(Q) &gt; csi + alpha/kappa){
+      likelihood &lt;- 1e6 
+    } else {
+      likelihood &lt;- -(-n*log(alpha) + sum(term2) +
+                       (p - 1)*log(a + kappa) + (q - 1)*log(a - kappa))
+    }
+  }
+  return(likelihood)
+}
+</code>
+</sec>
+<sec id="nb-code-cell-6-nb-1" specific-use="notebook-code">
+<code language="r script">par_LMOM &lt;- L_MOM_GEV(Q)
+
+GEV_MLE &lt;- optimx(par_LMOM,log_Like_GEV,method=c(&quot;Nelder-Mead&quot;,&quot;BFGS&quot;)
+                        ,Q=Q)
+</code>
+<code language="r script">index_max_likelihood &lt;- which.max(GEV_MLE$value)
+max_likelihood_MLE &lt;- GEV_MLE$value[index_max_likelihood]
+par_MLE &lt;- GEV_MLE[index_max_likelihood,1:3]
+  
+
+GEV_GMLE &lt;- optimx(par_LMOM,log_GLike_GEV,method=c(&quot;Nelder-Mead&quot;,&quot;BFGS&quot;)
+                        ,Q=Q,meanK = -0.10,varK = 0.122^2)
+</code>
+<code language="r script">index_max_likelihood &lt;- which.max(GEV_GMLE$value)
+max_likelihood_GMLE &lt;- GEV_GMLE$value[index_max_likelihood]
+par_GMLE &lt;- GEV_GMLE[index_max_likelihood,1:3]
+</code>
+<sec id="nb-code-cell-6-output-0-nb-1" specific-use="notebook-output">
+<preformat>Warning in log(y): NaNs produzidos
+
+Warning in log(y): NaNs produzidos
+
+Warning in log(y): NaNs produzidos
+
+Warning in log(y): NaNs produzidos</preformat>
+</sec>
+<sec id="nb-code-cell-6-output-1-nb-1" specific-use="notebook-output">
+<preformat>Warning in log(y): NaNs produzidos
+
+Warning in log(y): NaNs produzidos
+
+Warning in log(y): NaNs produzidos
+
+Warning in log(y): NaNs produzidos
+
+Warning in log(y): NaNs produzidos</preformat>
+</sec>
+<sec id="nb-code-cell-6-output-2-nb-1" specific-use="notebook-output">
+<preformat>Warning in log(a + kappa): NaNs produzidos</preformat>
+</sec>
+</sec>
+</body>
+
+
+
+<back>
+</back>
+
+
+</sub-article>
+<sub-article article-type="notebook" id="nb-8-nb-2">
+<front-stub>
+<title-group>
+<article-title>Explore Annual Maximum daily Precipitation in
+Brazil</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name>
+<surname>defined</surname>
+<given-names>To</given-names>
+</name>
+<string-name>To be defined</string-name>
+
+</contrib>
+</contrib-group>
+</front-stub>
+
+<body>
+<sec id="nb-code-cell-1-nb-2" specific-use="notebook-code">
+<code language="r script">
+library(tidyverse)
+</code>
+<code language="r script">
+library(lubridate)
+</code>
+<code language="r script">
+library(gt)
+</code>
+<code language="r script">
+require(knitr)
+</code>
+<sec id="nb-code-cell-1-output-0-nb-2" specific-use="notebook-output">
+<preformat>Warning: package 'tidyverse' was built under R version 4.2.2</preformat>
+</sec>
+<sec id="nb-code-cell-1-output-1-nb-2" specific-use="notebook-output">
+<preformat>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+✔ tibble  3.1.7     ✔ dplyr   1.0.9
+✔ tidyr   1.2.0     ✔ stringr 1.4.0
+✔ readr   2.1.2     ✔ forcats 0.5.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</preformat>
+</sec>
+<sec id="nb-code-cell-1-output-2-nb-2" specific-use="notebook-output">
+<preformat>Warning: package 'lubridate' was built under R version 4.2.1</preformat>
+</sec>
+<sec id="nb-code-cell-1-output-3-nb-2" specific-use="notebook-output">
+<preformat>
+Attaching package: 'lubridate'
+
+The following objects are masked from 'package:base':
+
+    date, intersect, setdiff, union</preformat>
+</sec>
+<sec id="nb-code-cell-1-output-4-nb-2" specific-use="notebook-output">
+<preformat>Warning: package 'gt' was built under R version 4.2.1</preformat>
+</sec>
+<sec id="nb-code-cell-1-output-5-nb-2" specific-use="notebook-output">
 <preformat>Carregando pacotes exigidos: knitr</preformat>
 </sec>
 </sec>
@@ -749,7 +971,7 @@ Souza, que contém os valores das precipitações máximas diárias e
 respectivos anos. Esse código só deve ser gerado de novo caso um novo
 arquivo original seja atualizado. Caso contrário, deve-se utilizar o
 arquivo RDS contido no diretório.</p>
-<sec id="nb-code-cell-2-nb-1" specific-use="notebook-code">
+<sec id="nb-code-cell-2-nb-2" specific-use="notebook-code">
 <code language="r script"># Code written by Thiago Lappicy with comments by Dirceu Reis
 
 # Extract metadata only (first 15 lines)
@@ -822,7 +1044,7 @@ rm(Pd_metadata)
 rm(Pd_tmp)
 </code>
 </sec>
-<sec id="nb-code-cell-3-nb-1" specific-use="notebook-code">
+<sec id="nb-code-cell-3-nb-2" specific-use="notebook-code">
 <code language="r script">
 # Load the data
 Pd &lt;- readRDS(&quot;Pd.rds&quot;)
@@ -852,13 +1074,13 @@ Tab_resumo_RL &lt;- record_length_station %&gt;%
             max = max(n),
             media = mean(n))
 </code>
-<sec id="nb-code-cell-3-output-0-nb-1" specific-use="notebook-output">
+<sec id="nb-code-cell-3-output-0-nb-2" specific-use="notebook-output">
 <preformat>`summarise()` has grouped output by 'Estacao_codigo'. You can override using
 the `.groups` argument.</preformat>
 </sec>
 </sec>
 <p>Criando uma Tabela para o resumo do tamanho das séries</p>
-<sec id="nb-code-cell-4-nb-1" specific-use="notebook-code">
+<sec id="nb-code-cell-4-nb-2" specific-use="notebook-code">
 <code language="r script">
 # Create a display table showing ten of
 # the largest islands in the world
@@ -887,12 +1109,12 @@ gt_tbl &lt;- gt(Tab_resumo_RL,rowname_col = &quot;BaciaCodigo&quot;) %&gt;%
 # Show the gt Table
 gt_tbl
 </code>
-<fig id="tbl-record-length-statistics-nb-1">
+<fig id="tbl-record-length-statistics-nb-2">
   <caption><p>Resumo das estatísticas do tamanho das séries históricas
   das estações Plu por bacia hidrográfica</p></caption>
 </fig>
 </sec>
-<sec id="cell-fig-number-stations-nb-1" specific-use="notebook-code">
+<sec id="cell-fig-number-stations-nb-2" specific-use="notebook-code">
 <code language="r script">
 # Criação de plotagem do número de estações com valores diários de precipitação
 # ao longo dos anos.
@@ -904,15 +1126,15 @@ ggplot() +
        x = &quot;Datas&quot;, y = &quot;Estações&quot;) +
   theme_bw()
 </code>
-<fig id="fig-number-stations-nb-1">
+<fig id="fig-number-stations-nb-2">
   <caption><p>Número de estações Plu no Brasil</p></caption>
   <graphic mimetype="image" mime-subtype="png" xlink:href="explore_daily_precip_files/figure-jats/fig-number-stations-1.png" />
 </fig>
-<sec id="cell-fig-number-stations-output-0-nb-1" specific-use="notebook-output">
+<sec id="cell-fig-number-stations-output-0-nb-2" specific-use="notebook-output">
 <preformat>Warning: Ignoring unknown parameters: linewidth</preformat>
 </sec>
 </sec>
-<sec id="cell-fig-number-stations-bacia-nb-1" specific-use="notebook-code">
+<sec id="cell-fig-number-stations-bacia-nb-2" specific-use="notebook-code">
 <code language="r script">
 # Criação de plotagem do número de estações, por bacia hidrográfica, com valores
 # diários de precipitação ao longo dos anos.
@@ -924,15 +1146,15 @@ ggplot() +
        x = &quot;Datas&quot;, y = &quot;Estações&quot;, col = &quot;Bacia&quot;) +
   theme_bw()
 </code>
-<fig id="fig-number-stations-bacia-nb-1">
+<fig id="fig-number-stations-bacia-nb-2">
   <caption><p>Número de estações Plu no Brasil por Bacia</p></caption>
   <graphic mimetype="image" mime-subtype="png" xlink:href="explore_daily_precip_files/figure-jats/fig-number-stations-bacia-1.png" />
 </fig>
-<sec id="cell-fig-number-stations-bacia-output-0-nb-1" specific-use="notebook-output">
+<sec id="cell-fig-number-stations-bacia-output-0-nb-2" specific-use="notebook-output">
 <preformat>Warning: Ignoring unknown parameters: linewidth</preformat>
 </sec>
 </sec>
-<sec id="cell-fig-cdf_record-length-nb-1" specific-use="notebook-code">
+<sec id="cell-fig-cdf_record-length-nb-2" specific-use="notebook-code">
 <code language="r script">
 # Criação de plotagem do número de estações, por bacia hidrográfica, com valores
 # diários de precipitação ao longo dos anos.
@@ -944,7 +1166,7 @@ ggplot() +
        x = &quot;Datas&quot;, y = &quot;Estações&quot;, col = &quot;Bacia&quot;) +
   theme_bw()
 </code>
-<fig id="fig-cdf_record-length-nb-1">
+<fig id="fig-cdf_record-length-nb-2">
   <caption><p>Distribuição de probabilidades acumuladas do tamanho de
   séries históricas das estações pluviométricas no Brasil</p></caption>
   <graphic mimetype="image" mime-subtype="png" xlink:href="explore_daily_precip_files/figure-jats/fig-cdf_record-length-1.png" />
@@ -959,7 +1181,7 @@ ggplot() +
 
 
 </sub-article>
-<sub-article article-type="notebook" id="nb-8-nb-2">
+<sub-article article-type="notebook" id="nb-12-nb-3">
 <front-stub>
 <title-group>
 <article-title>Explore Earthquakes</article-title>
@@ -977,10 +1199,10 @@ ggplot() +
 </front-stub>
 
 <body>
-<sec id="nb-code-cell-1-nb-2" specific-use="notebook-code">
+<sec id="nb-code-cell-1-nb-3" specific-use="notebook-code">
 <code language="r script">library(tidyverse)
 </code>
-<sec id="nb-code-cell-1-output-0-nb-2" specific-use="notebook-output">
+<sec id="nb-code-cell-1-output-0-nb-3" specific-use="notebook-output">
 <preformat>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.3     ✔ readr     2.1.4
 ✔ forcats   1.0.0     ✔ stringr   1.5.0
@@ -994,10 +1216,10 @@ ggplot() +
 </sec>
 </sec>
 <p>Read a clean version of data:</p>
-<sec id="nb-code-cell-2-nb-2" specific-use="notebook-code">
+<sec id="nb-code-cell-2-nb-3" specific-use="notebook-code">
 <code language="r script">la_palma &lt;- read_csv(&quot;la-palma.csv&quot;)
 </code>
-<sec id="nb-code-cell-2-output-0-nb-2" specific-use="notebook-output">
+<sec id="nb-code-cell-2-output-0-nb-3" specific-use="notebook-output">
 <preformat>Rows: 11347 Columns: 5
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: &quot;,&quot;
@@ -1009,7 +1231,7 @@ dttm (1): DateTime
 </sec>
 </sec>
 <p>Create spatial plot:</p>
-<sec id="cell-fig-spatial-plot-nb-2" specific-use="notebook-code">
+<sec id="cell-fig-spatial-plot-nb-3" specific-use="notebook-code">
 <code language="r script">#|   against longitude.&quot;
 la_palma |&gt; 
   ggplot(aes(Longitude, Latitude)) +
@@ -1018,7 +1240,7 @@ la_palma |&gt;
   scale_size(range = c(0.5, 2), guide = &quot;none&quot;) +
   theme_bw()
 </code>
-<fig id="fig-spatial-plot-nb-2">
+<fig id="fig-spatial-plot-nb-3">
   <caption><p>Locations of earthquakes on La Palma since
   2017</p></caption>
   <graphic mimetype="image" mime-subtype="png" xlink:href="explore-earthquakes_files/figure-jats/fig-spatial-plot-1.png" />

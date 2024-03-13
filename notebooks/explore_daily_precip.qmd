@@ -178,7 +178,7 @@ gt_tbl
 # ao longo dos anos.
 
 ggplot() +
-  geom_line(data = n_stations_year,aes(Ano,n),colour = 'black', linewidth = 1) +
+  geom_line(data = n_stations_year,aes(Ano,n),colour = 'black', size = 1) +
    labs(title = "Chuva Máxima Diária no Brasil", subtitle = "Número de estações",
        caption = "fonte dos dados: ANA (2022)",
        x = "Datas", y = "Estações") +
@@ -196,7 +196,7 @@ ggplot() +
 # diários de precipitação ao longo dos anos.
 
 ggplot() +
-  geom_line(data = n_stations_year_bacia,aes(Ano,n,col = BaciaCodigo), linewidth = 1) +
+  geom_line(data = n_stations_year_bacia,aes(Ano,n,color = as.factor(BaciaCodigo))) +
    labs(title = "Chuva Máxima Diária no Brasil", subtitle = "Número de estações por bacia",
        caption = "fonte dos dados: ANA (2022)",
        x = "Datas", y = "Estações", col = "Bacia") +

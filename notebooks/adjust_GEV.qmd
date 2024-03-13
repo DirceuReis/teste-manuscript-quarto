@@ -1,0 +1,155 @@
+---
+title: Explore Annual Maximum daily Precipitation in Brazil
+author: To be defined
+html-table-processing: none
+---
+
+```{r}
+#| echo: false
+#| warning: false
+
+library(tidyverse)
+library(lubridate)
+library(gt)
+library(optimx)
+```
+
+```{r}
+#| label: gera-GEV-teste  
+#| echo: false
+
+alpha <- 2.2
+csi <- 7.9
+kappa <- -0.05
+
+set.seed(123)
+p <- runif(30,0,1)
+
+# Generate a GEV series
+Q <- csi + alpha/kappa*(1-(-log(p))^kappa)
+```
+
+```{r}
+#| label: L-MOM
+#| echo: false
+
+
+L_MOM_GEV <- function(Q){
+  ordered_Q <- Q[order(Q)]
+  b_0 <- mean(ordered_Q)
+  Cv <- sd(ordered_Q)/b_0
+  n <- length(ordered_Q)
+  aux <- seq(from = 1,to = n)
+  aux2 <- (aux - 1)/(n*(n-1))
+  b_1 <- sum(aux2*ordered_Q)
+  aux3 <- aux - 2
+  aux3[aux3 < 0] <- 0 
+  b_2 <- sum(aux2*aux3*ordered_Q/(n-2))
+
+  lambda_1 <- b_0
+  lambda_2 <- 2*b_1 - b_0
+  lambda_3 = 6*b_2 -6*b_1 + b_0
+
+  tao_3 <- lambda_3/lambda_2
+
+  c <- (2*b_1 - b_0)/(3*b_2 - b_0) - log(2)/log(3)
+
+  kappa_L <- 7.859*c + 2.9554*(c^2)
+  alpha_L <- lambda_2*kappa_L/((1 - 2^(-kappa_L))*(gamma(1 + kappa_L)))
+  csi_L <- lambda_1 - alpha_L/kappa_L*(1 - gamma(1 + kappa_L))
+
+  return(c(csi_L, alpha_L, kappa_L))
+}
+```
+
+```{r}
+#| label: log_Like_GEV
+
+log_Like_GEV <- function(par,Q){
+  n <- length(Q)
+  csi <- par[1]
+  alpha <- par[2]
+  kappa <- par[3]
+  
+  y <- 1 - kappa/alpha*(Q - csi);
+  term2 = (1/kappa - 1)*log(y) - y^(1/kappa);
+
+  if (kappa < 0) {
+    if (min(Q) < csi + alpha/kappa){
+      likelihood <- 1e6
+      } else {
+        likelihood <- -(-n*log(alpha) + sum(term2)) 
+      }
+    }
+  if (kappa > 0) {
+    if (max(Q) > csi + alpha/kappa){
+      likelihood <- 1e6
+    } else {
+        likelihood <- -(-n*log(alpha) + sum(term2))
+    }
+  }
+  return(likelihood)
+}
+
+
+```
+
+```{r}
+#| label: log_GLike_GEV
+
+log_GLike_GEV <- function(par,Q,meanK,varK){
+  n <- length(Q)
+  csi <- par[1]
+  alpha <- par[2]
+  kappa <- par[3]
+  
+  a <- 0.5
+  b <- meanK + a;
+  p <- b^2*(1-b)/varK - b;
+  q = p*(1/b - 1);
+
+  y <- 1 - kappa/alpha*(Q - csi);
+  term2 = (1/kappa - 1)*log(y) - y^(1/kappa);
+
+  if (kappa < 0) {
+    if (min(Q) < csi + alpha/kappa){
+      likelihood <- 1e6
+    } else {
+        likelihood <- -(-n*log(alpha) + sum(term2) +
+                       (p - 1)*log(a + kappa) + (q - 1)*log(a - kappa)) 
+    }
+    }
+  if (kappa > 0) {
+    if (max(Q) > csi + alpha/kappa){
+      likelihood <- 1e6 
+    } else {
+      likelihood <- -(-n*log(alpha) + sum(term2) +
+                       (p - 1)*log(a + kappa) + (q - 1)*log(a - kappa))
+    }
+  }
+  return(likelihood)
+}
+
+```
+
+```{r}
+
+par_LMOM <- L_MOM_GEV(Q)
+
+GEV_MLE <- optimx(par_LMOM,log_Like_GEV,method=c("Nelder-Mead","BFGS")
+                        ,Q=Q)
+
+index_max_likelihood <- which.max(GEV_MLE$value)
+max_likelihood_MLE <- GEV_MLE$value[index_max_likelihood]
+par_MLE <- GEV_MLE[index_max_likelihood,1:3]
+  
+
+GEV_GMLE <- optimx(par_LMOM,log_GLike_GEV,method=c("Nelder-Mead","BFGS")
+                        ,Q=Q,meanK = -0.10,varK = 0.122^2)
+index_max_likelihood <- which.max(GEV_GMLE$value)
+max_likelihood_GMLE <- GEV_GMLE$value[index_max_likelihood]
+par_GMLE <- GEV_GMLE[index_max_likelihood,1:3]
+
+
+```
+
