@@ -5,18 +5,19 @@ html-table-processing: none
 ---
 
 ```{r}
+#| label: Carregamento
 #| echo: false
 #| warning: false
 
 library(tidyverse)
-library(lubridate)
-library(gt)
 library(optimx)
 ```
 
 ```{r}
 #| label: gera-GEV-teste  
 #| echo: false
+
+# Generate annual maixmum series from a GEV distribution
 
 alpha <- 2.2
 csi <- 7.9
@@ -33,6 +34,7 @@ Q <- csi + alpha/kappa*(1-(-log(p))^kappa)
 #| label: L-MOM
 #| echo: false
 
+# Function to estimate GEV parameters based upon L-MOM
 
 L_MOM_GEV <- function(Q){
   ordered_Q <- Q[order(Q)]
@@ -65,6 +67,8 @@ L_MOM_GEV <- function(Q){
 ```{r}
 #| label: log_Like_GEV
 
+# Function to estimate GEV parameters based upon Maximum Likelihood
+
 log_Like_GEV <- function(par,Q){
   n <- length(Q)
   csi <- par[1]
@@ -96,6 +100,10 @@ log_Like_GEV <- function(par,Q){
 
 ```{r}
 #| label: log_GLike_GEV
+
+# Function to estimate GEV parameters based upon the Generalized
+# Maximum Likelihood using the geophysical prior on kappa
+# See Martins and Stedinger (2001)
 
 log_GLike_GEV <- function(par,Q,meanK,varK){
   n <- length(Q)
@@ -133,6 +141,13 @@ log_GLike_GEV <- function(par,Q,meanK,varK){
 ```
 
 ```{r}
+#| Label: parameter-estimation
+#| warning: false
+
+# Estimate GEV parameters using
+# L-MOM
+# MLE
+# GMLE
 
 par_LMOM <- L_MOM_GEV(Q)
 
