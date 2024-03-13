@@ -5,9 +5,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <meta name="author" content="To be defined">
+    <meta name="author" content="Dirceu S. Reis Jr.">
 
-    <title>Explore Annual Maximum daily Precipitation in Brazil</title>
+    <title>Fitting GEV parameters (ongoing work)</title>
     <style>
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
@@ -177,7 +177,7 @@
      <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Explore Annual Maximum daily Precipitation in Brazil</h1>
+      <h1 class="title">Fitting GEV parameters (ongoing work)</h1>
           </div>
 
     
@@ -189,7 +189,7 @@
                 <div>
             <div class="quarto-title-meta-heading">Author</div>
             <div class="quarto-title-meta-contents">
-                        <p>To be defined </p>
+                        <p>Dirceu S. Reis Jr. </p>
                       </div>
           </div>
                 
@@ -230,138 +230,136 @@
 ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'lubridate' was built under R version 4.2.1</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'lubridate'
-
-The following objects are masked from 'package:base':
-
-    date, intersect, setdiff, union</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'gt' was built under R version 4.2.1</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(optimx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(optimx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'optimx' was built under R version 4.2.3</code></pre>
 </div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">2.2</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>csi <span class="ot">&lt;-</span> <span class="fl">7.9</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>kappa <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.05</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">30</span>,<span class="dv">0</span>,<span class="dv">1</span>)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a GEV series</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>Q <span class="ot">&lt;-</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(<span class="sc">-</span><span class="fu">log</span>(p))<span class="sc">^</span>kappa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate annual maixmum series from a GEV distribution</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">2.2</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>csi <span class="ot">&lt;-</span> <span class="fl">7.9</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>kappa <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.05</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">30</span>,<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a GEV series</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>Q <span class="ot">&lt;-</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(<span class="sc">-</span><span class="fu">log</span>(p))<span class="sc">^</span>kappa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>L_MOM_GEV <span class="ot">&lt;-</span> <span class="cf">function</span>(Q){</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  ordered_Q <span class="ot">&lt;-</span> Q[<span class="fu">order</span>(Q)]</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  b_0 <span class="ot">&lt;-</span> <span class="fu">mean</span>(ordered_Q)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  Cv <span class="ot">&lt;-</span> <span class="fu">sd</span>(ordered_Q)<span class="sc">/</span>b_0</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(ordered_Q)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  aux <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>,<span class="at">to =</span> n)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  aux2 <span class="ot">&lt;-</span> (aux <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">/</span>(n<span class="sc">*</span>(n<span class="dv">-1</span>))</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  b_1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(aux2<span class="sc">*</span>ordered_Q)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  aux3 <span class="ot">&lt;-</span> aux <span class="sc">-</span> <span class="dv">2</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  aux3[aux3 <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">0</span> </span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  b_2 <span class="ot">&lt;-</span> <span class="fu">sum</span>(aux2<span class="sc">*</span>aux3<span class="sc">*</span>ordered_Q<span class="sc">/</span>(n<span class="dv">-2</span>))</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  lambda_1 <span class="ot">&lt;-</span> b_0</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  lambda_2 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>b_1 <span class="sc">-</span> b_0</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  lambda_3 <span class="ot">=</span> <span class="dv">6</span><span class="sc">*</span>b_2 <span class="sc">-</span><span class="dv">6</span><span class="sc">*</span>b_1 <span class="sc">+</span> b_0</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  tao_3 <span class="ot">&lt;-</span> lambda_3<span class="sc">/</span>lambda_2</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  c <span class="ot">&lt;-</span> (<span class="dv">2</span><span class="sc">*</span>b_1 <span class="sc">-</span> b_0)<span class="sc">/</span>(<span class="dv">3</span><span class="sc">*</span>b_2 <span class="sc">-</span> b_0) <span class="sc">-</span> <span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">/</span><span class="fu">log</span>(<span class="dv">3</span>)</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  kappa_L <span class="ot">&lt;-</span> <span class="fl">7.859</span><span class="sc">*</span>c <span class="sc">+</span> <span class="fl">2.9554</span><span class="sc">*</span>(c<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  alpha_L <span class="ot">&lt;-</span> lambda_2<span class="sc">*</span>kappa_L<span class="sc">/</span>((<span class="dv">1</span> <span class="sc">-</span> <span class="dv">2</span><span class="sc">^</span>(<span class="sc">-</span>kappa_L))<span class="sc">*</span>(<span class="fu">gamma</span>(<span class="dv">1</span> <span class="sc">+</span> kappa_L)))</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  csi_L <span class="ot">&lt;-</span> lambda_1 <span class="sc">-</span> alpha_L<span class="sc">/</span>kappa_L<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">gamma</span>(<span class="dv">1</span> <span class="sc">+</span> kappa_L))</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(csi_L, alpha_L, kappa_L))</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to estimate GEV parameters based upon L-MOM</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>L_MOM_GEV <span class="ot">&lt;-</span> <span class="cf">function</span>(Q){</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  ordered_Q <span class="ot">&lt;-</span> Q[<span class="fu">order</span>(Q)]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  b_0 <span class="ot">&lt;-</span> <span class="fu">mean</span>(ordered_Q)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  Cv <span class="ot">&lt;-</span> <span class="fu">sd</span>(ordered_Q)<span class="sc">/</span>b_0</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(ordered_Q)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  aux <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>,<span class="at">to =</span> n)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  aux2 <span class="ot">&lt;-</span> (aux <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">/</span>(n<span class="sc">*</span>(n<span class="dv">-1</span>))</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  b_1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(aux2<span class="sc">*</span>ordered_Q)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  aux3 <span class="ot">&lt;-</span> aux <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  aux3[aux3 <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">0</span> </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  b_2 <span class="ot">&lt;-</span> <span class="fu">sum</span>(aux2<span class="sc">*</span>aux3<span class="sc">*</span>ordered_Q<span class="sc">/</span>(n<span class="dv">-2</span>))</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  lambda_1 <span class="ot">&lt;-</span> b_0</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  lambda_2 <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>b_1 <span class="sc">-</span> b_0</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  lambda_3 <span class="ot">=</span> <span class="dv">6</span><span class="sc">*</span>b_2 <span class="sc">-</span><span class="dv">6</span><span class="sc">*</span>b_1 <span class="sc">+</span> b_0</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  tao_3 <span class="ot">&lt;-</span> lambda_3<span class="sc">/</span>lambda_2</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  c <span class="ot">&lt;-</span> (<span class="dv">2</span><span class="sc">*</span>b_1 <span class="sc">-</span> b_0)<span class="sc">/</span>(<span class="dv">3</span><span class="sc">*</span>b_2 <span class="sc">-</span> b_0) <span class="sc">-</span> <span class="fu">log</span>(<span class="dv">2</span>)<span class="sc">/</span><span class="fu">log</span>(<span class="dv">3</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  kappa_L <span class="ot">&lt;-</span> <span class="fl">7.859</span><span class="sc">*</span>c <span class="sc">+</span> <span class="fl">2.9554</span><span class="sc">*</span>(c<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  alpha_L <span class="ot">&lt;-</span> lambda_2<span class="sc">*</span>kappa_L<span class="sc">/</span>((<span class="dv">1</span> <span class="sc">-</span> <span class="dv">2</span><span class="sc">^</span>(<span class="sc">-</span>kappa_L))<span class="sc">*</span>(<span class="fu">gamma</span>(<span class="dv">1</span> <span class="sc">+</span> kappa_L)))</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  csi_L <span class="ot">&lt;-</span> lambda_1 <span class="sc">-</span> alpha_L<span class="sc">/</span>kappa_L<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fu">gamma</span>(<span class="dv">1</span> <span class="sc">+</span> kappa_L))</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(csi_L, alpha_L, kappa_L))</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>log_Like_GEV <span class="ot">&lt;-</span> <span class="cf">function</span>(par,Q){</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(Q)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  csi <span class="ot">&lt;-</span> par[<span class="dv">1</span>]</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> par[<span class="dv">2</span>]</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  kappa <span class="ot">&lt;-</span> par[<span class="dv">3</span>]</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> kappa<span class="sc">/</span>alpha<span class="sc">*</span>(Q <span class="sc">-</span> csi);</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  term2 <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>kappa <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(y) <span class="sc">-</span> y<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>kappa);</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">min</span>(Q) <span class="sc">&lt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2)) </span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">max</span>(Q) <span class="sc">&gt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2))</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(likelihood)</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to estimate GEV parameters based upon Maximum Likelihood</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>log_Like_GEV <span class="ot">&lt;-</span> <span class="cf">function</span>(par,Q){</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(Q)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  csi <span class="ot">&lt;-</span> par[<span class="dv">1</span>]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> par[<span class="dv">2</span>]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  kappa <span class="ot">&lt;-</span> par[<span class="dv">3</span>]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> kappa<span class="sc">/</span>alpha<span class="sc">*</span>(Q <span class="sc">-</span> csi);</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  term2 <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>kappa <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(y) <span class="sc">-</span> y<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>kappa);</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">min</span>(Q) <span class="sc">&lt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2)) </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">max</span>(Q) <span class="sc">&gt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2))</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(likelihood)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>log_GLike_GEV <span class="ot">&lt;-</span> <span class="cf">function</span>(par,Q,meanK,varK){</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(Q)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  csi <span class="ot">&lt;-</span> par[<span class="dv">1</span>]</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> par[<span class="dv">2</span>]</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  kappa <span class="ot">&lt;-</span> par[<span class="dv">3</span>]</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> meanK <span class="sc">+</span> a;</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> b<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>b)<span class="sc">/</span>varK <span class="sc">-</span> b;</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  q <span class="ot">=</span> p<span class="sc">*</span>(<span class="dv">1</span><span class="sc">/</span>b <span class="sc">-</span> <span class="dv">1</span>);</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> kappa<span class="sc">/</span>alpha<span class="sc">*</span>(Q <span class="sc">-</span> csi);</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  term2 <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>kappa <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(y) <span class="sc">-</span> y<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>kappa);</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">min</span>(Q) <span class="sc">&lt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>        likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2) <span class="sc">+</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>                       (p <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">+</span> kappa) <span class="sc">+</span> (q <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">-</span> kappa)) </span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">max</span>(Q) <span class="sc">&gt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span> </span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2) <span class="sc">+</span></span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>                       (p <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">+</span> kappa) <span class="sc">+</span> (q <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">-</span> kappa))</span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(likelihood)</span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to estimate GEV parameters based upon the Generalized</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Maximum Likelihood using the geophysical prior on kappa</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># See Martins and Stedinger (2001)</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>log_GLike_GEV <span class="ot">&lt;-</span> <span class="cf">function</span>(par,Q,meanK,varK){</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(Q)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  csi <span class="ot">&lt;-</span> par[<span class="dv">1</span>]</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> par[<span class="dv">2</span>]</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  kappa <span class="ot">&lt;-</span> par[<span class="dv">3</span>]</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  b <span class="ot">&lt;-</span> meanK <span class="sc">+</span> a;</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> b<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>b)<span class="sc">/</span>varK <span class="sc">-</span> b;</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  q <span class="ot">=</span> p<span class="sc">*</span>(<span class="dv">1</span><span class="sc">/</span>b <span class="sc">-</span> <span class="dv">1</span>);</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> kappa<span class="sc">/</span>alpha<span class="sc">*</span>(Q <span class="sc">-</span> csi);</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  term2 <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>kappa <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(y) <span class="sc">-</span> y<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>kappa);</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">min</span>(Q) <span class="sc">&lt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>        likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2) <span class="sc">+</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>                       (p <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">+</span> kappa) <span class="sc">+</span> (q <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">-</span> kappa)) </span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">max</span>(Q) <span class="sc">&gt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span> </span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2) <span class="sc">+</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>                       (p <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">+</span> kappa) <span class="sc">+</span> (q <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">-</span> kappa))</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(likelihood)</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>par_LMOM <span class="ot">&lt;-</span> <span class="fu">L_MOM_GEV</span>(Q)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>GEV_MLE <span class="ot">&lt;-</span> <span class="fu">optimx</span>(par_LMOM,log_Like_GEV,<span class="at">method=</span><span class="fu">c</span>(<span class="st">"Nelder-Mead"</span>,<span class="st">"BFGS"</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                        ,<span class="at">Q=</span>Q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell" data-label="parameter-estimation">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimate GEV parameters using</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># L-MOM</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># MLE</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># GMLE</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>par_LMOM <span class="ot">&lt;-</span> <span class="fu">L_MOM_GEV</span>(Q)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>GEV_MLE <span class="ot">&lt;-</span> <span class="fu">optimx</span>(par_LMOM,log_Like_GEV,<span class="at">method=</span><span class="fu">c</span>(<span class="st">"Nelder-Mead"</span>,<span class="st">"BFGS"</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                        ,<span class="at">Q=</span>Q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in log(y): NaNs produzidos
 
@@ -371,13 +369,14 @@ Warning in log(y): NaNs produzidos
 
 Warning in log(y): NaNs produzidos</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>index_max_likelihood <span class="ot">&lt;-</span> <span class="fu">which.max</span>(GEV_MLE<span class="sc">$</span>value)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>max_likelihood_MLE <span class="ot">&lt;-</span> GEV_MLE<span class="sc">$</span>value[index_max_likelihood]</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>par_MLE <span class="ot">&lt;-</span> GEV_MLE[index_max_likelihood,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>GEV_GMLE <span class="ot">&lt;-</span> <span class="fu">optimx</span>(par_LMOM,log_GLike_GEV,<span class="at">method=</span><span class="fu">c</span>(<span class="st">"Nelder-Mead"</span>,<span class="st">"BFGS"</span>)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>                        ,<span class="at">Q=</span>Q,<span class="at">meanK =</span> <span class="sc">-</span><span class="fl">0.10</span>,<span class="at">varK =</span> <span class="fl">0.122</span><span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>index_max_likelihood <span class="ot">&lt;-</span> <span class="fu">which.max</span>(GEV_MLE<span class="sc">$</span>value)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>max_likelihood_MLE <span class="ot">&lt;-</span> GEV_MLE<span class="sc">$</span>value[index_max_likelihood]</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>par_MLE <span class="ot">&lt;-</span> GEV_MLE[index_max_likelihood,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>GEV_GMLE <span class="ot">&lt;-</span> <span class="fu">optimx</span>(par_LMOM,log_GLike_GEV,<span class="at">method=</span><span class="fu">c</span>(<span class="st">"Nelder-Mead"</span>,<span class="st">"BFGS"</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                        ,<span class="at">Q=</span>Q,<span class="at">meanK =</span> <span class="sc">-</span><span class="fl">0.10</span>,<span class="at">varK =</span> <span class="fl">0.122</span><span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in log(y): NaNs produzidos
 
@@ -392,9 +391,10 @@ Warning in log(y): NaNs produzidos</code></pre>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in log(a + kappa): NaNs produzidos</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>index_max_likelihood <span class="ot">&lt;-</span> <span class="fu">which.max</span>(GEV_GMLE<span class="sc">$</span>value)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>max_likelihood_GMLE <span class="ot">&lt;-</span> GEV_GMLE<span class="sc">$</span>value[index_max_likelihood]</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>par_GMLE <span class="ot">&lt;-</span> GEV_GMLE[index_max_likelihood,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>index_max_likelihood <span class="ot">&lt;-</span> <span class="fu">which.max</span>(GEV_GMLE<span class="sc">$</span>value)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>max_likelihood_GMLE <span class="ot">&lt;-</span> GEV_GMLE<span class="sc">$</span>value[index_max_likelihood]</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>par_GMLE <span class="ot">&lt;-</span> GEV_GMLE[index_max_likelihood,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
      </main>
 <!-- /main column -->  <script id="quarto-html-after-body" type="application/javascript">
