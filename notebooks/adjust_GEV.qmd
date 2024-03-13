@@ -1,6 +1,6 @@
 ---
-title: Explore Annual Maximum daily Precipitation in Brazil
-author: To be defined
+title: Fitting GEV parameters (ongoing work)
+author: Dirceu S. Reis Jr.
 html-table-processing: none
 ---
 
