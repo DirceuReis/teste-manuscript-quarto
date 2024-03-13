@@ -291,24 +291,28 @@
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  kappa <span class="ot">&lt;-</span> par[<span class="dv">3</span>]</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> kappa<span class="sc">/</span>alpha<span class="sc">*</span>(Q <span class="sc">-</span> csi);</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  term2 <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>kappa <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(y) <span class="sc">-</span> y<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>kappa);</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">min</span>(Q) <span class="sc">&lt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2)) </span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">max</span>(Q) <span class="sc">&gt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2))</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(likelihood)</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">sum</span>(y<span class="sc">&lt;</span><span class="dv">0</span>)<span class="sc">&gt;</span><span class="dv">0</span>) {</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    term2 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">1e6</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  term2 <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>kappa <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(y) <span class="sc">-</span> y<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>kappa)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">min</span>(Q) <span class="sc">&lt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2)) </span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">max</span>(Q) <span class="sc">&gt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>        likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2))</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(likelihood)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
@@ -328,26 +332,30 @@
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  q <span class="ot">=</span> p<span class="sc">*</span>(<span class="dv">1</span><span class="sc">/</span>b <span class="sc">-</span> <span class="dv">1</span>);</span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> kappa<span class="sc">/</span>alpha<span class="sc">*</span>(Q <span class="sc">-</span> csi);</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  term2 <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>kappa <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(y) <span class="sc">-</span> y<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>kappa);</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">min</span>(Q) <span class="sc">&lt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>        likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2) <span class="sc">+</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>                       (p <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">+</span> kappa) <span class="sc">+</span> (q <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">-</span> kappa)) </span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">max</span>(Q) <span class="sc">&gt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span> </span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2) <span class="sc">+</span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>                       (p <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">+</span> kappa) <span class="sc">+</span> (q <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">-</span> kappa))</span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(likelihood)</span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">sum</span>(y<span class="sc">&lt;</span><span class="dv">0</span>)<span class="sc">&gt;</span><span class="dv">0</span>) {</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    term2 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">1e6</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  term2 <span class="ot">=</span> (<span class="dv">1</span><span class="sc">/</span>kappa <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(y) <span class="sc">-</span> y<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>kappa)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">min</span>(Q) <span class="sc">&lt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>        likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2) <span class="sc">+</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>                       (p <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">+</span> kappa) <span class="sc">+</span> (q <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">-</span> kappa)) </span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (kappa <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">max</span>(Q) <span class="sc">&gt;</span> csi <span class="sc">+</span> alpha<span class="sc">/</span>kappa){</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="fl">1e6</span> </span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>      likelihood <span class="ot">&lt;-</span> <span class="sc">-</span>(<span class="sc">-</span>n<span class="sc">*</span><span class="fu">log</span>(alpha) <span class="sc">+</span> <span class="fu">sum</span>(term2) <span class="sc">+</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>                       (p <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">+</span> kappa) <span class="sc">+</span> (q <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="fu">log</span>(a <span class="sc">-</span> kappa))</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(likelihood)</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell" data-label="parameter-estimation">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
@@ -359,42 +367,22 @@
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>par_LMOM <span class="ot">&lt;-</span> <span class="fu">L_MOM_GEV</span>(Q)</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>GEV_MLE <span class="ot">&lt;-</span> <span class="fu">optimx</span>(par_LMOM,log_Like_GEV,<span class="at">method=</span><span class="fu">c</span>(<span class="st">"Nelder-Mead"</span>,<span class="st">"BFGS"</span>)</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                        ,<span class="at">Q=</span>Q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in log(y): NaNs produzidos
-
-Warning in log(y): NaNs produzidos
-
-Warning in log(y): NaNs produzidos
-
-Warning in log(y): NaNs produzidos</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>index_max_likelihood <span class="ot">&lt;-</span> <span class="fu">which.max</span>(GEV_MLE<span class="sc">$</span>value)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>max_likelihood_MLE <span class="ot">&lt;-</span> GEV_MLE<span class="sc">$</span>value[index_max_likelihood]</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>par_MLE <span class="ot">&lt;-</span> GEV_MLE[index_max_likelihood,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>GEV_GMLE <span class="ot">&lt;-</span> <span class="fu">optimx</span>(par_LMOM,log_GLike_GEV,<span class="at">method=</span><span class="fu">c</span>(<span class="st">"Nelder-Mead"</span>,<span class="st">"BFGS"</span>)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                        ,<span class="at">Q=</span>Q,<span class="at">meanK =</span> <span class="sc">-</span><span class="fl">0.10</span>,<span class="at">varK =</span> <span class="fl">0.122</span><span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in log(y): NaNs produzidos
-
-Warning in log(y): NaNs produzidos
-
-Warning in log(y): NaNs produzidos
-
-Warning in log(y): NaNs produzidos
-
-Warning in log(y): NaNs produzidos</code></pre>
-</div>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                        ,<span class="at">Q=</span>Q)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>index_max_likelihood <span class="ot">&lt;-</span> <span class="fu">which.max</span>(GEV_MLE<span class="sc">$</span>value)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>max_likelihood_MLE <span class="ot">&lt;-</span> GEV_MLE<span class="sc">$</span>value[index_max_likelihood]</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>par_MLE <span class="ot">&lt;-</span> GEV_MLE[index_max_likelihood,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>GEV_GMLE <span class="ot">&lt;-</span> <span class="fu">optimx</span>(par_LMOM,log_GLike_GEV,<span class="at">method=</span><span class="fu">c</span>(<span class="st">"Nelder-Mead"</span>,<span class="st">"BFGS"</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                        ,<span class="at">Q=</span>Q,<span class="at">meanK =</span> <span class="sc">-</span><span class="fl">0.10</span>,<span class="at">varK =</span> <span class="fl">0.122</span><span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in log(a + kappa): NaNs produzidos</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>index_max_likelihood <span class="ot">&lt;-</span> <span class="fu">which.max</span>(GEV_GMLE<span class="sc">$</span>value)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>max_likelihood_GMLE <span class="ot">&lt;-</span> GEV_GMLE<span class="sc">$</span>value[index_max_likelihood]</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>par_GMLE <span class="ot">&lt;-</span> GEV_GMLE[index_max_likelihood,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>index_max_likelihood <span class="ot">&lt;-</span> <span class="fu">which.max</span>(GEV_GMLE<span class="sc">$</span>value)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>max_likelihood_GMLE <span class="ot">&lt;-</span> GEV_GMLE<span class="sc">$</span>value[index_max_likelihood]</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>par_GMLE <span class="ot">&lt;-</span> GEV_GMLE[index_max_likelihood,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
      </main>
 <!-- /main column -->  <script id="quarto-html-after-body" type="application/javascript">

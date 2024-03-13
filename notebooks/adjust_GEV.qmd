@@ -76,8 +76,12 @@ log_Like_GEV <- function(par,Q){
   kappa <- par[3]
   
   y <- 1 - kappa/alpha*(Q - csi);
-  term2 = (1/kappa - 1)*log(y) - y^(1/kappa);
-
+  if (sum(y<0)>0) {
+    term2 <- -1e6
+  } else {
+  term2 = (1/kappa - 1)*log(y) - y^(1/kappa)
+  }
+  
   if (kappa < 0) {
     if (min(Q) < csi + alpha/kappa){
       likelihood <- 1e6
@@ -117,7 +121,11 @@ log_GLike_GEV <- function(par,Q,meanK,varK){
   q = p*(1/b - 1);
 
   y <- 1 - kappa/alpha*(Q - csi);
-  term2 = (1/kappa - 1)*log(y) - y^(1/kappa);
+  if (sum(y<0)>0) {
+    term2 <- -1e6
+  } else {
+  term2 = (1/kappa - 1)*log(y) - y^(1/kappa)
+  }
 
   if (kappa < 0) {
     if (min(Q) < csi + alpha/kappa){
@@ -142,7 +150,7 @@ log_GLike_GEV <- function(par,Q,meanK,varK){
 
 ```{r}
 #| Label: parameter-estimation
-#| warning: false
+#| warning: true
 
 # Estimate GEV parameters using
 # L-MOM
