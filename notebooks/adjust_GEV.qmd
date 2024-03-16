@@ -10,7 +10,9 @@ html-table-processing: none
 #| warning: false
 
 library(tidyverse)
+library(lubridate)
 library(optimx)
+library(purrr)
 ```
 
 ```{r}
@@ -19,15 +21,16 @@ library(optimx)
 
 # Generate annual maixmum series from a GEV distribution
 
-alpha <- 2.2
-csi <- 7.9
-kappa <- -0.05
+# alpha <- 2.2
+# csi <- 7.9
+# kappa <- -0.05
+# 
+# set.seed(123)
+# p <- runif(300,0,1)
+# 
+# # Generate a GEV series
+# Q <- csi + alpha/kappa*(1-(-log(p))^kappa)
 
-set.seed(123)
-p <- runif(30,0,1)
-
-# Generate a GEV series
-Q <- csi + alpha/kappa*(1-(-log(p))^kappa)
 ```
 
 ```{r}
@@ -63,6 +66,41 @@ L_MOM_GEV <- function(Q){
   return(c(csi_L, alpha_L, kappa_L))
 }
 ```
+
+```{r}
+#| label: MOM_Gumbel
+
+par_MOM_Gumbel <- function(Q){
+  Q_bar <- mean(Q)
+  S_Q <- sd(Q)
+  
+  alpha_Gumbel_MOM <- sqrt(6)*S_Q/pi
+  csi_Gumbel_MOM <- Q_bar - 0.5772*S_Q/pi
+  
+  return(c(csi_Gumbel_MOM, alpha_Gumbel_MOM))
+  
+}
+```
+
+
+```{r}
+#| label: log_Like_Gumbel
+
+log_Like_Gumbel <- function(par,Q){
+  n <- length(Q)
+  csi <- par[1]
+  alpha <- par[2]
+  
+  if (alpha<0) {
+    likelihood <- 1e6
+  } else {
+    y <- (Q - csi)/alpha
+    likelihood <- -(-n*log(alpha) - sum(y + exp(-y)))  
+  }
+}
+
+```
+
 
 ```{r}
 #| label: log_Like_GEV
@@ -152,27 +190,56 @@ log_GLike_GEV <- function(par,Q,meanK,varK){
 #| Label: parameter-estimation
 #| warning: true
 
-# Estimate GEV parameters using
-# L-MOM
-# MLE
-# GMLE
-
-par_LMOM <- L_MOM_GEV(Q)
-
-GEV_MLE <- optimx(par_LMOM,log_Like_GEV,method=c("Nelder-Mead","BFGS")
-                        ,Q=Q)
-
-index_max_likelihood <- which.max(GEV_MLE$value)
-max_likelihood_MLE <- GEV_MLE$value[index_max_likelihood]
-par_MLE <- GEV_MLE[index_max_likelihood,1:3]
-  
-
-GEV_GMLE <- optimx(par_LMOM,log_GLike_GEV,method=c("Nelder-Mead","BFGS")
-                        ,Q=Q,meanK = -0.10,varK = 0.122^2)
-index_max_likelihood <- which.max(GEV_GMLE$value)
-max_likelihood_GMLE <- GEV_GMLE$value[index_max_likelihood]
-par_GMLE <- GEV_GMLE[index_max_likelihood,1:3]
+# # Estimate GEV parameters using L-MOM estimators
+# par_LMOM <- L_MOM_GEV(Q)
+# 
+# # Estimate Gumbel parameters using MLE
+# Gumbel_MLE <- optimx(par_MOM_Gumbel(Q),log_Like_Gumbel,
+#                      method=c("Nelder-Mead","BFGS"),Q=Q)
+# 
+# index_max_likelihood <- which.max(Gumbel_MLE$value)
+# max_likelihood_MLE_Gumbel <- Gumbel_MLE$value[index_max_likelihood]
+# par_MLE_Gumbel <- Gumbel_MLE[index_max_likelihood,1:2]
+# 
+# # Estimate GEV parameters using MLE 
+# GEV_MLE <- optimx(par_LMOM,log_Like_GEV,method=c("Nelder-Mead","BFGS")
+#                         ,Q=Q)
+# 
+# index_max_likelihood <- which.max(GEV_MLE$value)
+# max_likelihood_MLE <- GEV_MLE$value[index_max_likelihood]
+# par_MLE <- GEV_MLE[index_max_likelihood,1:3]
+#   
+# # Estimate GEV parameters using Generalized MLE (GMLE)
+# GEV_GMLE <- optimx(par_LMOM,log_GLike_GEV,method=c("Nelder-Mead","BFGS")
+#                         ,Q=Q,meanK = -0.10,varK = 0.122^2)
+# index_max_likelihood <- which.max(GEV_GMLE$value)
+# max_likelihood_GMLE <- GEV_GMLE$value[index_max_likelihood]
+# par_GMLE <- GEV_GMLE[index_max_likelihood,1:3]
 
 
 ```
+
+
+```{r}
+#| label: Teste-map-coef
+# Load the data
+Pd <- readRDS("Pd.rds")
+
+# Create a new column with the year of the observation right after the date
+Pd <- Pd %>% mutate(Ano = year(Date), .after = Date)
+
+Pd2 <- Pd %>%
+  select(Estacao_codigo,Pdmax)
+
+Pd_nested <- Pd2 %>% 
+  group_by(Estacao_codigo) %>%
+  nest()
+
+Pd_nested <- Pd_nested %>%
+  mutate(Coef_LMOM = map(data,~ L_MOM_GEV(.x$Pdmax)))
+
+```
+
+
+
 

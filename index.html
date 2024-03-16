@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.24">
+<meta name="generator" content="quarto-1.5.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Tomas Duval">
 <meta name="author" content="Saulo AIres de Souza">
 <meta name="author" content="Dirceu S. Reis Jr.">
-<meta name="dcterms.date" content="2024-03-13">
+<meta name="dcterms.date" content="2024-03-16">
 <meta name="keywords" content="Curvas IDF, Informação regional">
 
 <title>Ajuste da Distribuição Generalizada de Valores Extremos para a Precipitações Máximas Diárias no Brasil</title>
@@ -105,10 +105,10 @@ window.Quarto = {
 <meta name="citation_author" content="Tomas Duval">
 <meta name="citation_author" content="Saulo AIres de Souza">
 <meta name="citation_author" content="Dirceu S. Reis Jr.">
-<meta name="citation_publication_date" content="2024-03-13">
-<meta name="citation_cover_date" content="2024-03-13">
+<meta name="citation_publication_date" content="2024-03-16">
+<meta name="citation_cover_date" content="2024-03-16">
 <meta name="citation_year" content="2024">
-<meta name="citation_online_date" content="2024-03-13">
+<meta name="citation_online_date" content="2024-03-16">
 <meta name="citation_language" content="en">
 <meta name="citation_journal_title" content="Earth and Space Science">
 <meta name="citation_reference" content="citation_title=Strategies for the development of volcanic hazard maps in monogenetic volcanic fields: The example of La Palma (Canary Islands);,citation_author=José Marrero;,citation_author=Alicia García;,citation_author=Manuel Berrocoso;,citation_author=Ángeles Llinares;,citation_author=Antonio Rodríguez-Losada;,citation_author=R. Ortiz;,citation_publication_date=2019-07;,citation_cover_date=2019-07;,citation_year=2019;,citation_doi=10.1186/s13617-019-0085-5;,citation_volume=8;,citation_journal_title=Journal of Applied Volcanology;">
@@ -161,7 +161,7 @@ window.Quarto = {
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">March 13, 2024</p>
+              <p class="date">March 16, 2024</p>
             </div>
           </div>
           
@@ -917,7 +917,7 @@ Marrero, José, Alicia García, Manuel Berrocoso, Ángeles Llinares, Antonio Rod
     Dirceu},
   title = {Ajuste Da {Distribuição} {Generalizada} de {Valores}
     {Extremos} Para a {Precipitações} {Máximas} {Diárias} No {Brasil}},
-  date = {2024-03-13},
+  date = {2024-03-16},
   langid = {en},
   abstract = {In September 2021, a significant jump in seismic activity
     on the island of La Palma (Canary Islands, Spain) signaled the start
@@ -929,7 +929,7 @@ Marrero, José, Alicia García, Manuel Berrocoso, Ángeles Llinares, Antonio Rod
 Duval, Tomas, Saulo AIres de Souza, and Dirceu S. Reis Jr. 2024.
 <span>“Ajuste Da Distribuição Generalizada de Valores Extremos Para a
 Precipitações Máximas Diárias No Brasil.”</span> Earth and Space
-Science. March 13, 2024.
+Science. March 16, 2024.
 </div></div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -967,18 +967,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1010,7 +999,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -1342,7 +1353,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","selector":".lightbox","openEffect":"zoom","loop":false});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","descPosition":"bottom","closeEffect":"zoom","loop":false});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
